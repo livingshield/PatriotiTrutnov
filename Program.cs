@@ -87,9 +87,13 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
     var smtpPort = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out var port) ? port : (int.TryParse(config["Smtp:Port"], out var p) ? p : 587);
     var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER") ?? config["Smtp:Username"];
     var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASS") ?? config["Smtp:Password"];
-    var targetEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? config["Smtp:FromEmail"];
-    var fromEmail = Environment.GetEnvironmentVariable("SMTP_USER") ?? config["Smtp:FromEmail"] ?? "noreply@patriotitrutnov.cz";
-    var fromName = config["Smtp:FromName"] ?? "Patrioti Trutnov Web";
+    
+    // Sender address (configured in env files)
+    var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM") ?? config["Smtp:FromEmail"] ?? "noreply@patriotitrutnov.cz";
+    var fromName = config["Smtp:FromName"] ?? "Patrioti Trutnov";
+
+    // Admin address for BCC copy
+    var adminEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? config["Smtp:FromEmail"];
 
     var dbType = Environment.GetEnvironmentVariable("DB_TYPE") ?? "MSSQL";
     var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
@@ -130,20 +134,32 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
         }
 
         // 2. Send Email
-        if (smtpUser != null && smtpPass != null && targetEmail != null && smtpHost != null)
+        if (smtpUser != null && smtpPass != null && smtpHost != null)
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(fromName, fromEmail));
-            message.To.Add(new MailboxAddress("Admin", targetEmail));
-            message.Subject = "Nový kontakt z webu Patrioti Trutnov: " + lead.FullName;
+            
+            // Recipient is the one who filled out the form ("prijemce, ten kdo je vyplnen")
+            message.To.Add(new MailboxAddress(lead.FullName, lead.Email));
+
+            // BCC a copy to the admin (website owner)
+            if (!string.IsNullOrEmpty(adminEmail))
+            {
+                message.Bcc.Add(new MailboxAddress("Admin Copy", adminEmail));
+            }
+
+            message.Subject = "Potvrzení přijetí zprávy | Patrioti Trutnov";
 
             message.Body = new TextPart("plain")
             {
-                Text = $"Name: {lead.FullName}\n" +
-                       $"Email: {lead.Email}\n" +
-                       $"Phone: {lead.Phone}\n" +
-                       $"Topic: {lead.Topic}\n\n" +
-                       $"---\nSent by Automation System."
+                Text = $"Dobrý den,\n\n" +
+                       $"děkujeme za váš zájem o komunitu Patrioti Trutnov. Vaši zprávu jsme úspěšně přijali a brzy se vám ozveme zpět.\n\n" +
+                       $"Rekapitulace odeslaných údajů:\n" +
+                       $"- Jméno: {lead.FullName}\n" +
+                       $"- E-mail: {lead.Email}\n" +
+                       $"- Telefon: {lead.Phone ?? "neuveden"}\n" +
+                       $"- Téma: {lead.Topic ?? "neuvedeno"}\n\n" +
+                       $"---\nS pozdravem,\nTým Patrioti Trutnov\nhttp://www.patriotitrutnov.cz/"
             };
 
             using (var client = new SmtpClient())
