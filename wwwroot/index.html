@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrioti Trutnov | Komunita pro lepší Trutnov</title>
+    <meta name="description" content="Patrioti Trutnov – občanská iniciativa pro rozvoj města, kultury a komunitního života v Trutnově a okolí.">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">PATRIOTI<span>TRUTNOV</span></div>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#home">Domů</a></li>
+                    <li><a href="#about">O nás</a></li>
+                    <li><a href="#services">Aktivity</a></li>
+                    <li><a href="#contact" class="btn-primary">Kontakt</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content reveal">
+                    <span class="badge">Občanská iniciativa pro lepší Trutnov</span>
+                    <h1 class="hero-title">Společně tvoříme <span class="text-accent">budoucnost</span> našeho města</h1>
+                    <p class="hero-desc">Jsme komunita lidí, kteří milují Trutnov a chtějí se aktivně podílet na jeho rozvoji. Přidejte se k nám!</p>
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn-primary">Přidejte se</a>
+                        <a href="#about" class="btn-secondary">Zjistit více</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container reveal">
+                <div class="section-header text-center">
+                    <span class="badge">Kdo jsme</span>
+                    <h2 class="title">Patrioti Trutnov</h2>
+                    <p class="subtitle">Jsme skupina aktivních občanů Trutnova, kteří věří, že společným úsilím můžeme zlepšit kvalitu života v našem městě. Organizujeme akce, podporujeme lokální projekty a dáváme hlas těm, kteří chtějí být slyšet.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section highlight">
+            <div class="container reveal">
+                <div class="section-header text-center">
+                    <h2 class="title">Naše aktivity</h2>
+                    <p class="subtitle">Co děláme pro Trutnov a jeho obyvatele.</p>
+                </div>
+                <div class="grid">
+                    <div class="glass-card">
+                        <div class="icon">🏙️</div>
+                        <h3>Rozvoj města</h3>
+                        <p>Aktivně se zapojujeme do diskusí o budoucnosti Trutnova a přijímáme podněty od obyvatel.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="icon">🎭</div>
+                        <h3>Kultura & Akce</h3>
+                        <p>Organizujeme komunitní setkání, kulturní události a sportovní aktivity pro celé rodiny.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="icon">🤝</div>
+                        <h3>Spolupráce</h3>
+                        <p>Propojujeme místní podnikatele, spolky a organizace pro společné projekty.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container reveal">
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <h2>Chcete se <br>zapojit?</h2>
+                        <p>Napište nám a rádi vás přivítáme v naší komunitě. Každý hlas se počítá!</p>
+                    </div>
+                    <div class="glass-card contact-form-card">
+                        <form id="leadForm">
+                            <div class="form-group">
+                                <label for="name">Celé jméno</label>
+                                <input type="text" id="name" name="fullName" placeholder="Jan Novák" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" name="email" placeholder="jan@email.cz" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefon</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+420 000 000 000">
+                            </div>
+                            <div class="form-group">
+                                <label for="topic">Zajímá mě</label>
+                                <select id="topic" name="topic">
+                                    <option value="zapojeni">Chci se zapojit</option>
+                                    <option value="akce">Informace o akcích</option>
+                                    <option value="spoluprace">Nabídka spolupráce</option>
+                                    <option value="jine">Jiné</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">Odeslat zprávu</button>
+                            <div id="formStatus" class="status-message"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Patrioti Trutnov. Všechna práva vyhrazena.</p>
+                <p>Design & Development by Ing. Jan Kytýr</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/animations.js"></script>
+</body>
+</html>

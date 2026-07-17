@@ -1,0 +1,19 @@
+# Build outputs and dependencies
+bin/
+obj/
+publish/
+
+# IDE configurations
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+# Sensitive configurations and secrets
+.env
+.env.test
+.env.prod
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
