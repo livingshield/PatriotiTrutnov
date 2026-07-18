@@ -672,4 +672,13 @@ select option {
     color: #ffffff;
 }
 
+.social-link {
+    transition: var(--transition);
+}
+
+.social-link:hover {
+    color: var(--accent) !important;
+    transform: translateY(-2px);
+}
+
 

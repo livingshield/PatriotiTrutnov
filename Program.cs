@@ -252,7 +252,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                             <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #475569;'>
                                 <p style='margin: 0; font-size: 14px; font-weight: 600;'>S pozdravem,</p>
                                 <p style='margin: 3px 0 0 0; font-size: 15px; font-weight: 700; color: #1e3a8a;'>Tým Patrioti Trutnov</p>
-                                <p style='margin: 5px 0 0 0; font-size: 13px;'><a href='https://www.patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>www.patriotitrutnov.cz</a></p>
+                                <p style='margin: 5px 0 0 0; font-size: 13px;'><a href='https://www.patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>www.patriotitrutnov.cz</a> | <a href='https://www.facebook.com/patriotitrutnov' style='color: #1877f2; text-decoration: none; font-weight: 600;'>Facebook</a></p>
                             </div>
                         </div>
                         
