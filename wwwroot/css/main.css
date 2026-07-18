@@ -68,9 +68,23 @@ h1, h2, h3 {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -1px;
+}
+
+.header-logo-img {
+    height: 42px;
+    width: auto;
+    object-fit: contain;
+    transition: var(--transition);
+}
+
+.logo:hover .header-logo-img {
+    transform: rotate(-6deg) scale(1.08);
 }
 
 .logo span {
@@ -147,6 +161,36 @@ h1, h2, h3 {
     display: flex;
     align-items: center;
     background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.08), transparent 50%);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-banner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.hero-banner-img {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.25));
+    animation: floatAnimation 6s ease-in-out infinite;
+}
+
+@keyframes floatAnimation {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
 }
 
 .hero-title {
@@ -305,6 +349,26 @@ h1, h2, h3 {
     border-top: 1px solid var(--border);
 }
 
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.footer-logo-img {
+    height: 70px;
+    width: auto;
+    opacity: 0.85;
+    transition: var(--transition);
+}
+
+.footer-brand:hover .footer-logo-img {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
 .footer-bottom {
     display: flex;
     justify-content: space-between;
@@ -327,6 +391,29 @@ h1, h2, h3 {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .hero {
+        height: auto;
+        padding: 140px 0 80px 0;
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .hero-desc {
+        margin: 0 auto 30px auto;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .hero-banner-img {
+        max-height: 280px;
+    }
+
     .hero-title {
         font-size: 2.2rem;
     }
