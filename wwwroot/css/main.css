@@ -85,6 +85,7 @@ h1, h2, h3 {
 
 .section {
     padding: 100px 0;
+    scroll-margin-top: 155px; /* Offset to prevent header overlap when clicking anchors */
 }
 
 .text-accent {
@@ -134,6 +135,40 @@ h1, h2, h3 {
 
 .logo span {
     color: var(--accent);
+}
+
+/* Mobile Navigation Toggle Button */
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1010;
+    outline: none;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    margin: 5px 0;
+    transition: var(--transition);
+    border-radius: 2px;
+}
+
+/* Hamburger transform to X when active */
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
 }
 
 .nav-list {
@@ -452,6 +487,11 @@ select option {
         height: 60px;
     }
 
+    .section {
+        padding: 60px 0;
+        scroll-margin-top: 100px;
+    }
+
     .hero {
         padding: 140px 0 60px 0;
     }
@@ -484,8 +524,48 @@ select option {
         text-align: center;
     }
 
+    /* Mobile Navigation Dropdown */
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        padding: 20px 0;
+        display: none;
+        z-index: 999;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav.active {
+        display: block;
+    }
+
     .nav-list {
-        gap: 15px;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .theme-selector {
+        margin-left: 0;
+        margin-top: 10px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo span {
+        display: none;
+    }
+    .logo {
+        font-size: 1.25rem;
     }
 }
 
@@ -540,10 +620,4 @@ select option {
     color: #ffffff;
 }
 
-@media (max-width: 768px) {
-    .theme-selector {
-        margin-left: 0;
-        margin-top: 10px;
-        justify-content: center;
-    }
-}
+
