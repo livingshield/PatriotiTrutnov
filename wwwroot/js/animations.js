@@ -39,15 +39,15 @@ if (leadForm) {
             });
 
             if (response.ok) {
-                formStatus.innerText = 'Thank you! Your message has been sent.';
+                formStatus.innerText = 'Děkujeme! Vaše zpráva byla úspěšně odeslána.';
                 formStatus.className = 'status-message success';
                 leadForm.reset();
             } else {
-                formStatus.innerText = 'Something went wrong. Please try again.';
+                formStatus.innerText = 'Něco se nepovedlo. Zkuste to prosím znovu.';
                 formStatus.className = 'status-message error';
             }
         } catch (err) {
-            formStatus.innerText = 'Error connecting to server.';
+            formStatus.innerText = 'Chyba při spojení se serverem.';
             formStatus.className = 'status-message error';
         } finally {
             btn.innerText = originalText;
