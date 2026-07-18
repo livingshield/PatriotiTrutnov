@@ -191,25 +191,79 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
 
             message.Subject = "Potvrzení přijetí zprávy | Patrioti Trutnov";
 
-            var messageText = $"Dobrý den,\n\n" +
-                              $"děkujeme za váš zájem o komunitu Patrioti Trutnov. Vaši zprávu jsme úspěšně přijali a brzy se vám ozveme zpět.\n\n" +
-                              $"Rekapitulace odeslaných údajů:\n" +
-                              $"- Jméno: {lead.FullName}\n" +
-                              $"- E-mail: {lead.Email}\n" +
-                              $"- Telefon: {lead.Phone ?? "neuveden"}\n" +
-                              $"- Téma: {lead.Topic ?? "neuvedeno"}\n";
-
+            var bodyBuilder = new BodyBuilder();
+            
+            // Build raw details row for message optionally
+            string messageRow = "";
             if (!string.IsNullOrEmpty(lead.Message))
             {
-                messageText += $"- Zpráva:\n{lead.Message}\n";
+                messageRow = $@"
+                    <tr>
+                        <td style='padding: 8px 0; color: #64748b; font-weight: 600; vertical-align: top;'>Zpráva / vzkaz:</td>
+                        <td style='padding: 8px 0; color: #334155; line-height: 1.5; white-space: pre-line;'>{lead.Message}</td>
+                    </tr>";
             }
 
-            messageText += $"\n---\nS pozdravem,\nTým Patrioti Trutnov\nhttp://www.patriotitrutnov.cz/";
+            bodyBuilder.HtmlBody = $@"
+                <div style='background-color: #f3f4f6; padding: 30px 15px; font-family: ""Segoe UI"", Helvetica, Arial, sans-serif;'>
+                    <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;'>
+                        <!-- Header -->
+                        <div style='background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); padding: 30px 20px; text-align: center;'>
+                            <img src='https://www.patriotitrutnov.cz/img/PatriotiLogoBlack.png' alt='Patrioti Trutnov Logo' style='height: 90px; width: auto; display: block; margin: 0 auto 15px auto;'>
+                            <h1 style='color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;'>Děkujeme za Váš zájem</h1>
+                            <p style='color: #94a3b8; margin: 5px 0 0 0; font-size: 14px;'>Iniciativa Patrioti Trutnov</p>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div style='padding: 30px 25px;'>
+                            <p style='font-size: 16px; color: #1f2937; line-height: 1.6; margin-top: 0;'>
+                                Dobrý den, <strong style='color: #0f172a;'>{lead.FullName}</strong>,<br><br>
+                                velice si vážíme Vašeho zájmu o zapojení se do naší komunity <strong>Patrioti Trutnov</strong>. Vaše zpráva byla úspěšně doručena. Brzy se Vám ozveme zpět a domluvíme se na dalším postupu.
+                            </p>
+                            
+                            <div style='margin: 25px 0; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; padding: 20px;'>
+                                <h3 style='margin-top: 0; color: #1e3a8a; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;'>Rekapitulace odeslaných údajů</h3>
+                                
+                                <table style='width: 100%; border-collapse: collapse; font-size: 14px;'>
+                                    <tr>
+                                        <td style='padding: 8px 0; color: #64748b; width: 130px; font-weight: 600;'>Jméno:</td>
+                                        <td style='padding: 8px 0; color: #0f172a;'>{lead.FullName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0; color: #64748b; font-weight: 600;'>E-mail:</td>
+                                        <td style='padding: 8px 0; color: #0f172a;'><a href='mailto:{lead.Email}' style='color: #2563eb; text-decoration: none;'>{lead.Email}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0; color: #64748b; font-weight: 600;'>Telefon:</td>
+                                        <td style='padding: 8px 0; color: #0f172a;'>{lead.Phone ?? "neuveden"}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0; color: #64748b; font-weight: 600;'>Zajímá mě:</td>
+                                        <td style='padding: 8px 0; color: #1e3a8a; font-weight: 600;'>{lead.Topic ?? "neuvedeno"}</td>
+                                    </tr>
+                                    {messageRow}
+                                </table>
+                            </div>
+                            
+                            <p style='font-size: 15px; color: #475569; line-height: 1.6;'>
+                                Těšíme se na spolupráci. Společně můžeme pro naše město udělat spoustu skvělých věcí!
+                            </p>
+                            
+                            <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #475569;'>
+                                <p style='margin: 0; font-size: 14px; font-weight: 600;'>S pozdravem,</p>
+                                <p style='margin: 3px 0 0 0; font-size: 15px; font-weight: 700; color: #1e3a8a;'>Tým Patrioti Trutnov</p>
+                                <p style='margin: 5px 0 0 0; font-size: 13px;'><a href='https://www.patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>www.patriotitrutnov.cz</a></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer -->
+                        <div style='background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #e5e7eb; font-size: 12px; color: #94a3b8;'>
+                            Tento e-mail byl automaticky vygenerován na základě Vašeho vyplnění formuláře na webu Patrioti Trutnov.
+                        </div>
+                    </div>
+                </div>" ;
 
-            message.Body = new TextPart("plain")
-            {
-                Text = messageText
-            };
+            message.Body = bodyBuilder.ToMessageBody();
 
             using (var client = new SmtpClient())
             {
