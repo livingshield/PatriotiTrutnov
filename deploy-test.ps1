@@ -104,6 +104,9 @@ Start-Sleep -Seconds 5
 # Upload folder contents
 Upload-Folder $localPath $remoteBase
 
+# Upload static assets directly to the root for static serving fallback
+Upload-Folder "$localPath\wwwroot" $remoteBase
+
 # Delete app_offline.htm from FTP to bring the site back online
 Write-Host "Bringing app online..."
 Delete-RemoteFile ($remoteBase + "app_offline.htm")
