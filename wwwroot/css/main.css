@@ -186,10 +186,10 @@ h1, h2, h3 {
 .hero-banner-img {
     width: 100%;
     height: auto;
-    max-height: 280px;
-    max-width: 280px;
+    max-height: 250px;
+    max-width: 780px;
     object-fit: contain;
-    filter: drop-shadow(0 20px 50px rgba(59, 130, 246, 0.45));
+    filter: drop-shadow(0 20px 45px rgba(59, 130, 246, 0.25));
     animation: floatAnimation 6s ease-in-out infinite;
 }
 
@@ -407,8 +407,8 @@ h1, h2, h3 {
     }
 
     .hero-banner-img {
-        max-height: 200px;
-        max-width: 200px;
+        max-height: 140px;
+        max-width: 100%;
     }
 
     .hero-title {
