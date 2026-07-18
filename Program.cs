@@ -200,16 +200,16 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                 messageRow = $@"
                     <tr>
                         <td style='padding: 8px 0; color: #64748b; font-weight: 600; vertical-align: top;'>Zpráva / vzkaz:</td>
-                        <td style='padding: 8px 0; color: #334155; line-height: 1.5; white-space: pre-line;'>{lead.Message}</td>
+                        <td style='padding: 8px 0; color: #334155; line-height: 1.5; white-space: pre-line; word-break: break-word; overflow-wrap: break-word;'>{lead.Message}</td>
                     </tr>";
             }
 
             bodyBuilder.HtmlBody = $@"
                 <div style='background-color: #f3f4f6; padding: 30px 15px; font-family: ""Segoe UI"", Helvetica, Arial, sans-serif;'>
-                    <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;'>
+                    <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; word-break: break-word; overflow-wrap: break-word;'>
                         <!-- Header -->
                         <div style='background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); padding: 30px 20px; text-align: center;'>
-                            <img src='https://www.patriotitrutnov.cz/img/PatriotiLogoBlack.png' alt='Patrioti Trutnov Logo' style='height: 90px; width: auto; display: block; margin: 0 auto 15px auto;'>
+                            <img src='https://www.ekobio.org/patriotitrutnov/img/PatriotiLogoBlack.png' alt='Patrioti Trutnov Logo' style='height: 90px; width: auto; display: block; margin: 0 auto 15px auto;'>
                             <h1 style='color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;'>Děkujeme za Váš zájem</h1>
                             <p style='color: #94a3b8; margin: 5px 0 0 0; font-size: 14px;'>Iniciativa Patrioti Trutnov</p>
                         </div>
