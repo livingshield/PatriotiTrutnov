@@ -119,7 +119,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
     
     // Sender address (configured in env files)
     var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM") ?? config["Smtp:FromEmail"] ?? "noreply@patriotitrutnov.cz";
-    var fromName = config["Smtp:FromName"] ?? "Patrioti Trutnov";
+    var fromName = "Patrioti Trutnov";
 
     // If SMTP_PASS is empty or matches the placeholder, fall back to config settings (using working scio@ekobio.org credentials)
     if (string.IsNullOrEmpty(smtpPass) || smtpPass == "DOPLNTE_HESLO_K_EMAILU_ZDE")
