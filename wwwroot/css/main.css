@@ -12,6 +12,19 @@
     --border: rgba(59, 130, 246, 0.2);
     
     --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --input-bg: rgba(255, 255, 255, 0.03);
+    --header-bg: rgba(0, 0, 0, 0.85);
+}
+
+.light-theme {
+    --bg-deep: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.85);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border: rgba(59, 130, 246, 0.15);
+    --input-bg: rgba(0, 0, 0, 0.02);
+    --header-bg: rgba(255, 255, 255, 0.85);
 }
 
 * {
@@ -56,7 +69,7 @@ h1, h2, h3 {
     width: 100%;
     z-index: 1000;
     padding: 12px 0;
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--header-bg);
     backdrop-filter: blur(12px);
     transition: var(--transition);
 }
@@ -324,12 +337,17 @@ h1, h2, h3 {
 .form-group input, .form-group select {
     width: 100%;
     padding: 12px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
     border: 1px solid var(--border);
-    color: #fff;
+    color: var(--text-primary);
     border-radius: 6px;
-    font-size: 0.9rem;
-    transition: border-color 0.3s;
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+select option {
+    background: var(--bg-surface);
+    color: var(--text-primary);
 }
 
 .form-group input:focus, .form-group select:focus {
@@ -365,7 +383,7 @@ h1, h2, h3 {
 }
 
 .footer-logo-img {
-    height: 70px;
+    height: 140px;
     width: auto;
     opacity: 0.85;
     transition: var(--transition);
@@ -437,4 +455,34 @@ h1, h2, h3 {
     .nav-list {
         gap: 15px;
     }
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: scale(1.1);
+}
+
+/* Show/hide icons depending on theme */
+.light-theme .sun-icon {
+    display: none;
+}
+
+html:not(.light-theme) .moon-icon {
+    display: none;
 }

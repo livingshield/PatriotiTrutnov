@@ -55,3 +55,28 @@ if (leadForm) {
         }
     });
 }
+
+// Theme Toggle Logic
+const themeToggleBtn = document.getElementById('themeToggle');
+const headerLogo = document.querySelector('.header-logo-img');
+const footerLogo = document.querySelector('.footer-logo-img');
+const favicon = document.querySelector('link[rel="icon"]');
+
+const setLogoTheme = (isLight) => {
+    const logoSrc = isLight ? 'img/PatriotiLogo.png' : 'img/PatriotiLogoBlack.png';
+    if (headerLogo) headerLogo.src = logoSrc;
+    if (footerLogo) footerLogo.src = logoSrc;
+    if (favicon) favicon.href = logoSrc;
+};
+
+// Initialize Theme on load
+const isLight = document.documentElement.classList.contains('light-theme');
+setLogoTheme(isLight);
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        const isLightTheme = document.documentElement.classList.toggle('light-theme');
+        localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
+        setLogoTheme(isLightTheme);
+    });
+}

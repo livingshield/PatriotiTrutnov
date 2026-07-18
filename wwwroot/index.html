@@ -12,6 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css">
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.classList.add('light-theme');
+        }
+    </script>
 </head>
 <body>
     <header class="header">
@@ -26,6 +31,12 @@
                     <li><a href="#about">O nás</a></li>
                     <li><a href="#services">Aktivity</a></li>
                     <li><a href="#contact" class="btn-primary">Kontakt</a></li>
+                    <li>
+                        <button id="themeToggle" class="theme-toggle-btn" aria-label="Přepnout vzhled">
+                            <span class="sun-icon">☀️</span>
+                            <span class="moon-icon">🌙</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
