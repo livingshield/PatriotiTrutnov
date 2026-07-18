@@ -456,7 +456,7 @@ select option {
 }
 
 .footer-logo-img {
-    height: 140px;
+    height: 260px;
     width: auto;
     opacity: 0.85;
     transition: var(--transition);
@@ -563,6 +563,10 @@ select option {
         margin-left: 0;
         margin-top: 10px;
         justify-content: center;
+    }
+
+    .footer-logo-img {
+        height: 180px;
     }
 }
 
