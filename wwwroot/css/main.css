@@ -441,9 +441,13 @@ select option {
     color: #ef4444;
 }
 
+#contact {
+    padding-bottom: 10px;
+}
+
 /* Footer */
 .footer {
-    padding: 40px 0;
+    padding: 10px 0 40px 0;
     border-top: 1px solid var(--border);
 }
 
@@ -452,7 +456,7 @@ select option {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    margin-bottom: 25px;
+    margin-bottom: 55px; /* Shift logo down relative to footer-bottom */
 }
 
 .footer-logo-img {
