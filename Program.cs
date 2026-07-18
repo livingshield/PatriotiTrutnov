@@ -8,15 +8,16 @@ using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load .env from local directory or fallback to parent directory
-string localEnv = Path.Combine(Directory.GetCurrentDirectory(), ".env");
+// Load .env from assembly base directory or fallback to current directory
+string baseDir = AppContext.BaseDirectory;
+string localEnv = Path.Combine(baseDir, ".env");
 if (File.Exists(localEnv))
 {
     Env.Load(localEnv);
 }
 else
 {
-    Env.Load(Path.Combine(Directory.GetCurrentDirectory(), "..", ".env"));
+    Env.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 }
 
 builder.Services.AddEndpointsApiExplorer();
@@ -92,8 +93,18 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
     var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM") ?? config["Smtp:FromEmail"] ?? "noreply@patriotitrutnov.cz";
     var fromName = config["Smtp:FromName"] ?? "Patrioti Trutnov";
 
+    // If SMTP_PASS is empty or matches the placeholder, fall back to config settings (using working scio@ekobio.org credentials)
+    if (string.IsNullOrEmpty(smtpPass) || smtpPass == "DOPLNTE_HESLO_K_EMAILU_ZDE")
+    {
+        smtpHost = config["Smtp:Host"];
+        smtpPort = int.TryParse(config["Smtp:Port"], out var fallbackPort) ? fallbackPort : 587;
+        smtpUser = config["Smtp:Username"];
+        smtpPass = config["Smtp:Password"];
+        fromEmail = config["Smtp:FromEmail"] ?? "scio@ekobio.org";
+    }
+
     // Admin address for BCC copy
-    var adminEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? config["Smtp:FromEmail"];
+    var adminEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? fromEmail;
 
     var dbType = Environment.GetEnvironmentVariable("DB_TYPE") ?? "MSSQL";
     var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
