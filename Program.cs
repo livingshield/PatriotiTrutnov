@@ -26,6 +26,17 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
+// Handle nested IIS application paths (like /patriotitrutnov on test server)
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/patriotitrutnov", out var remainingPath))
+    {
+        context.Request.PathBase = "/patriotitrutnov";
+        context.Request.Path = remainingPath;
+    }
+    await next();
+});
+
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
