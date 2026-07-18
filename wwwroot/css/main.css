@@ -1,7 +1,7 @@
 :root {
-    --bg-deep: #0a0f1a;
-    --bg-surface: #111827;
-    --bg-glass: rgba(17, 24, 39, 0.85);
+    --bg-deep: #000000;
+    --bg-surface: #0a0f1a;
+    --bg-glass: rgba(10, 15, 26, 0.85);
 
     --accent: #3b82f6;
     --accent-light: #60a5fa;
@@ -56,7 +56,7 @@ h1, h2, h3 {
     width: 100%;
     z-index: 1000;
     padding: 12px 0;
-    background: rgba(10, 15, 26, 0.9);
+    background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(12px);
     transition: var(--transition);
 }
