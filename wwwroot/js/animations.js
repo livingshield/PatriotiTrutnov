@@ -57,26 +57,46 @@ if (leadForm) {
 }
 
 // Theme Toggle Logic
-const themeToggleBtn = document.getElementById('themeToggle');
+const themeBtns = document.querySelectorAll('.theme-btn');
 const headerLogo = document.querySelector('.header-logo-img');
 const footerLogo = document.querySelector('.footer-logo-img');
 const favicon = document.querySelector('link[rel="icon"]');
 
-const setLogoTheme = (isLight) => {
+const setAppTheme = (themeName) => {
+    // Remove all theme classes
+    document.documentElement.classList.remove('light-theme', 'red-theme', 'green-theme');
+    
+    // Add selected theme class
+    if (themeName !== 'dark') {
+        document.documentElement.classList.add(`${themeName}-theme`);
+    }
+    
+    // Update logo source based on theme
+    const isLight = themeName === 'light';
     const logoSrc = isLight ? 'img/PatriotiLogo.png' : 'img/PatriotiLogoBlack.png';
+    
     if (headerLogo) headerLogo.src = logoSrc;
     if (footerLogo) footerLogo.src = logoSrc;
     if (favicon) favicon.href = logoSrc;
+    
+    // Update active button state
+    themeBtns.forEach(btn => {
+        if (btn.getAttribute('data-theme') === themeName) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
 };
 
 // Initialize Theme on load
-const isLight = document.documentElement.classList.contains('light-theme');
-setLogoTheme(isLight);
+const savedTheme = localStorage.getItem('theme') || 'dark';
+setAppTheme(savedTheme);
 
-if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-        const isLightTheme = document.documentElement.classList.toggle('light-theme');
-        localStorage.setItem('theme', isLightTheme ? 'light' : 'dark');
-        setLogoTheme(isLightTheme);
+themeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const selectedTheme = btn.getAttribute('data-theme');
+        localStorage.setItem('theme', selectedTheme);
+        setAppTheme(selectedTheme);
     });
-}
+});

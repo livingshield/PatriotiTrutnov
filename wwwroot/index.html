@@ -13,9 +13,12 @@
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css">
     <script>
-        if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.classList.add('light-theme');
-        }
+        (function() {
+            const theme = localStorage.getItem('theme') || 'dark';
+            if (theme !== 'dark') {
+                document.documentElement.classList.add(theme + '-theme');
+            }
+        })();
     </script>
 </head>
 <body>
@@ -32,10 +35,24 @@
                     <li><a href="#services">Aktivity</a></li>
                     <li><a href="#contact" class="btn-primary">Kontakt</a></li>
                     <li>
-                        <button id="themeToggle" class="theme-toggle-btn" aria-label="Přepnout vzhled">
-                            <span class="sun-icon">☀️</span>
-                            <span class="moon-icon">🌙</span>
-                        </button>
+                        <div class="theme-selector">
+                            <button class="theme-btn" data-theme="dark" title="Tmavý vzhled">
+                                <span class="theme-icon">🌙</span>
+                                <span class="theme-text">Tmavý</span>
+                            </button>
+                            <button class="theme-btn" data-theme="light" title="Světlý vzhled">
+                                <span class="theme-icon">☀️</span>
+                                <span class="theme-text">Světlý</span>
+                            </button>
+                            <button class="theme-btn" data-theme="red" title="Vzhled Plamen">
+                                <span class="theme-icon">🔥</span>
+                                <span class="theme-text">Plamen</span>
+                            </button>
+                            <button class="theme-btn" data-theme="green" title="Vzhled Les">
+                                <span class="theme-icon">🌲</span>
+                                <span class="theme-text">Les</span>
+                            </button>
+                        </div>
                     </li>
                 </ul>
             </nav>
