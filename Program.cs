@@ -65,6 +65,7 @@ using (var scope = app.Services.CreateScope())
                         Email VARCHAR(200) NOT NULL,
                         Phone VARCHAR(50),
                         Topic VARCHAR(500),
+                        Message TEXT,
                         CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
                     )"
                 : @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='patriotitrutnov_leads' AND xtype='U')
@@ -75,6 +76,7 @@ using (var scope = app.Services.CreateScope())
                             Email NVARCHAR(200) NOT NULL,
                             Phone NVARCHAR(50),
                             Topic NVARCHAR(500),
+                            Message NVARCHAR(MAX),
                             CreatedAt DATETIME DEFAULT GETDATE()
                         )
                     END";
@@ -84,6 +86,21 @@ using (var scope = app.Services.CreateScope())
                 : (DbCommand)new SqlCommand(createTableSql, (SqlConnection)connection);
                 
             command.ExecuteNonQuery();
+            
+            // Safely add Message column if it is missing in the database table (due to incremental update)
+            try
+            {
+                using var alterCmd = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                    ? (DbCommand)new MySqlCommand("ALTER TABLE patriotitrutnov_leads ADD COLUMN Message TEXT NULL;", (MySqlConnection)connection)
+                    : (DbCommand)new SqlCommand(@"IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('patriotitrutnov_leads') AND name = 'Message')
+                                                  ALTER TABLE patriotitrutnov_leads ADD Message NVARCHAR(MAX) NULL;", (SqlConnection)connection);
+                alterCmd.ExecuteNonQuery();
+            }
+            catch
+            {
+                // Ignore if it already exists or fails
+            }
+
             Console.WriteLine($"[DB] {dbType} Database table is ready.");
         }
         catch (Exception ex)
@@ -130,7 +147,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                 : (DbConnection)new SqlConnection(connectionString))
             {
                 await connection.OpenAsync();
-                string insertSql = "INSERT INTO patriotitrutnov_leads (FullName, Email, Phone, Topic) VALUES (@FullName, @Email, @Phone, @Topic)";
+                string insertSql = "INSERT INTO patriotitrutnov_leads (FullName, Email, Phone, Topic, Message) VALUES (@FullName, @Email, @Phone, @Topic, @Message)";
                 
                 using (var command = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
                     ? (DbCommand)new MySqlCommand(insertSql, (MySqlConnection)connection)
@@ -142,6 +159,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                         myCmd.Parameters.AddWithValue("@Email", lead.Email);
                         myCmd.Parameters.AddWithValue("@Phone", (object?)lead.Phone ?? DBNull.Value);
                         myCmd.Parameters.AddWithValue("@Topic", (object?)lead.Topic ?? DBNull.Value);
+                        myCmd.Parameters.AddWithValue("@Message", (object?)lead.Message ?? DBNull.Value);
                     }
                     else if (command is SqlCommand msCmd)
                     {
@@ -149,6 +167,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                         msCmd.Parameters.AddWithValue("@Email", lead.Email);
                         msCmd.Parameters.AddWithValue("@Phone", (object?)lead.Phone ?? DBNull.Value);
                         msCmd.Parameters.AddWithValue("@Topic", (object?)lead.Topic ?? DBNull.Value);
+                        msCmd.Parameters.AddWithValue("@Message", (object?)lead.Message ?? DBNull.Value);
                     }
                     await command.ExecuteNonQueryAsync();
                 }
@@ -172,16 +191,24 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
 
             message.Subject = "Potvrzení přijetí zprávy | Patrioti Trutnov";
 
+            var messageText = $"Dobrý den,\n\n" +
+                              $"děkujeme za váš zájem o komunitu Patrioti Trutnov. Vaši zprávu jsme úspěšně přijali a brzy se vám ozveme zpět.\n\n" +
+                              $"Rekapitulace odeslaných údajů:\n" +
+                              $"- Jméno: {lead.FullName}\n" +
+                              $"- E-mail: {lead.Email}\n" +
+                              $"- Telefon: {lead.Phone ?? "neuveden"}\n" +
+                              $"- Téma: {lead.Topic ?? "neuvedeno"}\n";
+
+            if (!string.IsNullOrEmpty(lead.Message))
+            {
+                messageText += $"- Zpráva:\n{lead.Message}\n";
+            }
+
+            messageText += $"\n---\nS pozdravem,\nTým Patrioti Trutnov\nhttp://www.patriotitrutnov.cz/";
+
             message.Body = new TextPart("plain")
             {
-                Text = $"Dobrý den,\n\n" +
-                       $"děkujeme za váš zájem o komunitu Patrioti Trutnov. Vaši zprávu jsme úspěšně přijali a brzy se vám ozveme zpět.\n\n" +
-                       $"Rekapitulace odeslaných údajů:\n" +
-                       $"- Jméno: {lead.FullName}\n" +
-                       $"- E-mail: {lead.Email}\n" +
-                       $"- Telefon: {lead.Phone ?? "neuveden"}\n" +
-                       $"- Téma: {lead.Topic ?? "neuvedeno"}\n\n" +
-                       $"---\nS pozdravem,\nTým Patrioti Trutnov\nhttp://www.patriotitrutnov.cz/"
+                Text = messageText
             };
 
             using (var client = new SmtpClient())
@@ -203,5 +230,5 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
 
 app.Run();
 
-public record LeadModel(string FullName, string Email, string? Phone, string? Topic);
+public record LeadModel(string FullName, string Email, string? Phone, string? Topic, string? Message);
 

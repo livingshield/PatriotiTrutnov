@@ -401,7 +401,7 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-.form-group input, .form-group select {
+.form-group input, .form-group select, .form-group textarea {
     width: 100%;
     padding: 12px;
     background: var(--input-bg);
@@ -412,12 +412,18 @@ h1, h2, h3 {
     transition: var(--transition);
 }
 
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
 select option {
     background: var(--bg-surface);
     color: var(--text-primary);
 }
 
-.form-group input:focus, .form-group select:focus {
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
     outline: none;
     border-color: var(--accent);
 }
