@@ -67,7 +67,7 @@ const setAppTheme = (themeName) => {
     
     // Update logo source based on theme
     const isLight = themeName === 'light';
-    const logoSrc = isLight ? 'img/PatriotiLogo.png' : 'img/PatriotiLogoBlack.png';
+    const logoSrc = isLight ? 'img/PatriotiLogo.webp' : 'img/PatriotiLogoBlack.webp';
     
     if (headerLogo) headerLogo.src = logoSrc;
     if (footerLogo) footerLogo.src = logoSrc;
