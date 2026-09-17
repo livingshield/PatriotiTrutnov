@@ -111,6 +111,8 @@ h1, h2, h3 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1400px;
+    width: 100%;
 }
 
 .logo {
@@ -123,6 +125,8 @@ h1, h2, h3 {
     text-decoration: none;
     color: var(--text-primary);
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .header-logo-img {
@@ -174,10 +178,23 @@ h1, h2, h3 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
 .nav-list {
     display: flex;
     list-style: none;
-    gap: 20px;
+    gap: 18px;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-list li {
+    display: flex;
     align-items: center;
 }
 
@@ -185,8 +202,10 @@ h1, h2, h3 {
     text-decoration: none;
     color: var(--text-primary);
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     transition: color 0.3s;
+    white-space: nowrap;
+    display: inline-block;
 }
 
 .nav-list a:hover {
@@ -196,7 +215,7 @@ h1, h2, h3 {
 /* Buttons */
 .btn-primary {
     display: inline-block;
-    padding: 12px 28px;
+    padding: 11px 24px;
     background: var(--accent-gradient);
     color: #fff;
     text-decoration: none;
@@ -208,6 +227,7 @@ h1, h2, h3 {
     border: none;
     cursor: pointer;
     transition: var(--transition);
+    white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -665,11 +685,108 @@ select option {
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1250px) {
     .header-logo-img {
-        height: 60px;
+        height: 90px;
+    }
+    .logo {
+        font-size: 1.3rem;
+        gap: 8px;
+    }
+    .nav {
+        gap: 14px;
+    }
+    .nav-list {
+        gap: 12px;
+    }
+    .nav-list a {
+        font-size: 0.84rem;
+    }
+    .btn-primary {
+        padding: 9px 18px;
+        font-size: 0.75rem;
+    }
+    .theme-btn {
+        padding: 2px 7px;
+        gap: 5px;
+    }
+    .theme-btn .theme-text {
+        font-size: 0.58rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .header-logo-img {
+        height: 65px;
     }
 
+    .header {
+        padding: 8px 0;
+    }
+
+    /* Mobile Navigation Dropdown */
+    .nav-toggle {
+        display: block;
+    }
+
+    .nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: var(--bg-surface);
+        border-bottom: 1px solid var(--border);
+        padding: 24px 20px;
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+        z-index: 999;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 16px;
+        align-items: center;
+        width: 100%;
+    }
+
+    .nav-list a {
+        font-size: 1rem;
+    }
+
+    .theme-selector {
+        flex-direction: row;
+        gap: 6px;
+        margin-top: 10px;
+        margin-left: 0;
+        justify-content: center;
+        border-radius: 30px;
+        padding: 4px 8px;
+    }
+
+    .theme-btn {
+        flex-direction: column;
+        padding: 4px 10px;
+        border-radius: 20px;
+        width: auto;
+    }
+
+    .theme-btn .theme-icon {
+        margin-bottom: 2px;
+    }
+
+    .theme-btn .theme-text {
+        font-size: 0.55rem;
+    }
+}
+
+@media (max-width: 768px) {
     .section {
         padding: 60px 0;
         scroll-margin-top: 100px;
@@ -730,41 +847,6 @@ select option {
         text-align: center;
     }
 
-    /* Mobile Navigation Dropdown */
-    .nav-toggle {
-        display: block;
-    }
-
-    .nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background: var(--bg-surface);
-        border-bottom: 1px solid var(--border);
-        padding: 20px 0;
-        display: none;
-        z-index: 999;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .nav.active {
-        display: block;
-    }
-
-    .nav-list {
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-        width: 100%;
-    }
-
-    .theme-selector {
-        margin-left: 0;
-        margin-top: 10px;
-        justify-content: center;
-    }
-
     .footer-logo-img {
         height: 180px;
     }
@@ -779,17 +861,19 @@ select option {
     }
 }
 
-/* Theme Selector */
+/* Theme Selector - Na výšku (vertikální panel na pravé straně) */
 .theme-selector {
     display: flex;
-    gap: 4px;
-    align-items: center;
-    margin-left: 15px;
+    flex-direction: column;
+    gap: 3px;
+    align-items: stretch;
     background: var(--selector-bg);
     border: 1px solid var(--border);
-    padding: 3px;
-    border-radius: 30px;
+    padding: 5px;
+    border-radius: 12px;
     transition: var(--transition);
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
 .theme-btn {
@@ -797,37 +881,48 @@ select option {
     border: none;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    padding: 4px 8px;
-    border-radius: 20px;
+    justify-content: flex-start;
+    gap: 7px;
+    padding: 3px 9px;
+    border-radius: 6px;
     color: var(--text-secondary);
     transition: var(--transition);
     outline: none;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .theme-btn .theme-icon {
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 1;
-    margin-bottom: 2px;
+    margin-bottom: 0;
+    width: 16px;
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .theme-btn .theme-text {
-    font-size: 0.55rem;
+    font-size: 0.62rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1;
+    white-space: nowrap;
 }
 
 .theme-btn:hover {
     color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .theme-btn.active {
     background: var(--accent);
     color: #ffffff;
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
 }
 
 .social-link {
