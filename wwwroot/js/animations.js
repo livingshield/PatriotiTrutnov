@@ -64,7 +64,7 @@ const favicon = document.querySelector('link[rel="icon"]');
 
 const setAppTheme = (themeName) => {
     // Remove all theme classes
-    document.documentElement.classList.remove('light-theme', 'red-theme', 'green-theme');
+    document.documentElement.classList.remove('light-theme', 'red-theme', 'green-theme', 'water-theme', 'gold-theme');
     
     // Add selected theme class
     if (themeName !== 'dark') {
