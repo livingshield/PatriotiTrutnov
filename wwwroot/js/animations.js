@@ -182,7 +182,7 @@ if (downloadIcsBtn) {
             'DTSTART:20260925T130000Z',
             'DTEND:20260925T150000Z',
             'SUMMARY:Beseda s ob\u010dany - Patrioti Trutnov',
-            'DESCRIPTION:Setk\u00e1n\u00ed s kandid\u00e1tem na sen\u00e1tora a p\u0159edstaven\u00ed volebn\u00edho programu Patrioti Trutnov (Kandid\u00e1tka \u010d. 1). Host\u00e9: Mgr. Bc. Kate\u0159ina Hurd\u00e1lkov\u00e1, JUDr. Jind\u0159ich Rajchl, Ing. Hynek Beran.',
+            'DESCRIPTION:Setk\u00e1n\u00ed s kandid\u00e1tem na sen\u00e1tora a p\u0159edstaven\u00ed volebn\u00edho programu Patrioti Trutnov (Kandid\u00e1tka \u010d. 1). Host\u00e9: Mgr. Bc. Kate\u0159ina Hurd\u00e1lkov\u00e1, DiS., JUDr. Jind\u0159ich Rajchl, Ing. Hynek Beran.',
             'LOCATION:Krakono\u0161ovo n\u00e1m\u011bst\u00ed, Trutnov',
             'STATUS:CONFIRMED',
             'END:VEVENT',

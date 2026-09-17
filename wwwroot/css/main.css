@@ -1649,6 +1649,19 @@ select option {
     margin: 0;
 }
 
+.candidate-focus a {
+    color: var(--accent-light);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.candidate-focus a:hover {
+    color: var(--accent);
+    text-decoration: none;
+}
+
 /* 10 Priorities Program Grid */
 .program-grid {
     display: grid;
