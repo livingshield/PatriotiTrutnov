@@ -306,7 +306,7 @@ if (navToggle && navMenu) {
         });
     });
 
-    // Close menu when clicking the logo
+    // Close menu when clicking the logo or header volte badge
     const logoLink = document.querySelector('.logo');
     if (logoLink) {
         logoLink.addEventListener('click', () => {
@@ -314,4 +314,13 @@ if (navToggle && navMenu) {
             navMenu.classList.remove('active');
         });
     }
+
+    const volteBadgeLink = document.querySelector('.header-volte-badge');
+    if (volteBadgeLink) {
+        volteBadgeLink.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    }
 }
+
