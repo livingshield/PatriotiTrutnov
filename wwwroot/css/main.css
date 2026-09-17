@@ -159,7 +159,15 @@ h1, h2, h3 {
     padding: 12px 0;
     background: var(--header-bg);
     backdrop-filter: blur(12px);
-    transition: var(--transition);
+    transition: padding 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Shrinking header on scroll */
+.header.scrolled {
+    padding: 6px 0;
+    background: var(--header-bg);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    border-bottom: 1px solid var(--border);
 }
 
 .header-container {
@@ -182,17 +190,28 @@ h1, h2, h3 {
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
+    transition: font-size 0.3s ease;
+}
+
+.header.scrolled .logo {
+    font-size: 1.25rem;
+    gap: 10px;
 }
 
 .header-logo-img {
     height: 116px;
     width: auto;
     object-fit: contain;
-    transition: var(--transition);
+    transition: height 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.3s ease;
 }
 
+.header.scrolled .header-logo-img {
+    height: 52px;
+}
+
+/* Dignified logo hover (no wild rotating or tilting) */
 .logo:hover .header-logo-img {
-    transform: rotate(-6deg) scale(1.08);
+    transform: scale(1.04);
 }
 
 .logo span {
@@ -761,13 +780,6 @@ select option {
         padding: 9px 18px;
         font-size: 0.75rem;
     }
-    .theme-btn {
-        padding: 2px 7px;
-        gap: 5px;
-    }
-    .theme-btn .theme-text {
-        font-size: 0.58rem;
-    }
 }
 
 @media (max-width: 992px) {
@@ -815,32 +827,21 @@ select option {
         font-size: 1rem;
     }
 
-    .theme-selector {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-        margin-top: 10px;
-        margin-left: 0;
+    .header-tools {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         justify-content: center;
-        border-radius: 14px;
-        padding: 6px 10px;
-        max-width: 300px;
+        gap: 12px;
+        margin-top: 12px;
+        margin-left: 0;
         width: 100%;
     }
 
-    .theme-btn {
-        flex-direction: column;
-        padding: 5px 6px;
-        border-radius: 8px;
-        width: 100%;
-    }
-
-    .theme-btn .theme-icon {
-        margin-bottom: 2px;
-    }
-
-    .theme-btn .theme-text {
-        font-size: 0.55rem;
+    .theme-dropdown-menu {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
@@ -878,6 +879,42 @@ select option {
 
     .event-card {
         padding: 24px 18px;
+    }
+
+    .event-countdown-bar {
+        flex-direction: column;
+        text-align: center;
+        padding: 14px 12px;
+        gap: 12px;
+    }
+
+    .countdown-header {
+        justify-content: center;
+    }
+
+    .countdown-timer {
+        justify-content: center;
+    }
+
+    .countdown-unit {
+        min-width: 48px;
+        padding: 4px 8px;
+    }
+
+    .countdown-value {
+        font-size: 1.25rem;
+    }
+
+    .event-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .event-actions .btn-primary,
+    .event-actions .btn-secondary {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
     }
 
     .contact-grid {
@@ -919,68 +956,368 @@ select option {
     }
 }
 
-/* Theme Selector - Na výšku (vertikální panel na pravé straně) */
-.theme-selector {
+/* Header Tools (Facebook Button + Theme Dropdown Select) */
+.header-tools {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    align-items: stretch;
-    background: var(--selector-bg);
-    border: 1px solid var(--border);
-    padding: 3px;
-    border-radius: 10px;
-    transition: var(--transition);
+    align-items: center;
+    gap: 10px;
+    margin-left: 8px;
     flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
 }
 
-.theme-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: row;
+.header-fb-btn {
+    display: inline-flex;
     align-items: center;
-    justify-content: flex-start;
     gap: 6px;
-    padding: 2px 7px;
-    border-radius: 5px;
-    color: var(--text-secondary);
+    padding: 6px 12px;
+    background: rgba(24, 119, 242, 0.12);
+    border: 1px solid rgba(24, 119, 242, 0.35);
+    border-radius: 6px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
     transition: var(--transition);
+}
+
+.header-fb-btn:hover {
+    background: #1877f2;
+    color: #ffffff;
+    border-color: #1877f2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+}
+
+.header-fb-btn .fb-icon {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+/* Theme Dropdown Select */
+.theme-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.theme-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--selector-bg);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
     outline: none;
+    transition: var(--transition);
     white-space: nowrap;
+}
+
+.theme-dropdown-trigger:hover,
+.theme-dropdown.open .theme-dropdown-trigger {
+    border-color: var(--accent);
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--accent-light);
+}
+
+.theme-current-icon {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.theme-current-name {
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.theme-dropdown-arrow {
+    font-size: 0.72rem;
+    transition: transform 0.25s ease;
+    opacity: 0.85;
+}
+
+.theme-dropdown.open .theme-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.theme-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 155px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 6px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    display: none;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.theme-dropdown.open .theme-dropdown-menu {
+    display: flex;
+}
+
+.theme-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.84rem;
+    font-weight: 500;
+    text-align: left;
+    transition: all 0.2s ease;
     width: 100%;
 }
 
-.theme-btn .theme-icon {
-    font-size: 0.8rem;
-    line-height: 1;
-    margin-bottom: 0;
-    width: 15px;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+.theme-dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-light);
 }
 
-.theme-btn .theme-text {
-    font-size: 0.6rem;
+.theme-dropdown-item.active {
+    background: var(--accent-gradient);
+    color: var(--btn-text);
     font-weight: 700;
+}
+
+/* Event Countdown Bar */
+.event-countdown-bar {
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.countdown-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.countdown-pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 12px #ef4444;
+    animation: countdownBlink 1.5s infinite;
+}
+
+@keyframes countdownBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.countdown-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    min-width: 55px;
+}
+
+.countdown-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.1;
+}
+
+.countdown-label {
+    font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    line-height: 1;
-    white-space: nowrap;
+    color: var(--text-secondary);
+    font-weight: 600;
 }
 
-.theme-btn:hover {
+.countdown-separator {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent-light);
+    opacity: 0.6;
+}
+
+/* Event Calendar & Map Action Buttons */
+.btn-event-cal, .btn-event-map {
+    font-size: 0.82rem;
+    padding: 10px 16px;
+    margin-left: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* FAQ Accordion Section */
+.faq-accordion {
+    max-width: 860px;
+    margin: 35px auto 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faq-item {
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.faq-item.open {
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    cursor: pointer;
+    text-align: left;
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.08);
+    font-family: inherit;
+    transition: background 0.2s ease;
 }
 
-.theme-btn.active {
-    background: var(--accent);
-    color: var(--btn-text, #ffffff);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+.faq-question:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.faq-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.faq-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex: 1;
+    color: var(--text-primary);
+    line-height: 1.35;
+}
+
+.faq-chevron {
+    font-size: 1.2rem;
+    color: var(--accent-light);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.faq-item.open .faq-chevron {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    padding: 0 24px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.faq-item.open .faq-answer {
+    max-height: 450px;
+    padding: 0 24px 22px 24px;
+}
+
+.faq-answer strong {
+    color: var(--text-primary);
+}
+
+/* Volunteer / Support Checkboxes in Contact Form */
+.support-options {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.support-group-title {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.custom-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    user-select: none;
+}
+
+.custom-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.checkbox-text strong {
+    color: var(--accent-light);
 }
 
 .social-link {
@@ -1131,6 +1468,45 @@ select option {
 .candidate-tag-leader {
     color: #eab308;
     font-weight: 700;
+}
+
+.candidate-profession {
+    font-size: 0.84rem;
+    color: var(--accent-light);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.leader-quote {
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background: rgba(234, 179, 8, 0.08);
+    border-left: 3px solid #eab308;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 8px 0 16px 0;
+    text-align: left;
+}
+
+.candidate-priorities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 14px;
+}
+
+.p-tag {
+    font-size: 0.76rem;
+    font-weight: 700;
+    background: var(--selector-bg);
+    border: 1px solid var(--border);
+    color: var(--accent-light);
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
 }
 
 .candidate-focus {
