@@ -62,14 +62,14 @@ const headerLogo = document.querySelector('.header-logo-img');
 const footerLogo = document.querySelector('.footer-logo-img');
 const favicon = document.querySelector('link[rel="icon"]');
 
+const THEME_CLASSES = ['dark-theme', 'light-theme', 'red-theme', 'green-theme', 'water-theme', 'gold-theme'];
+
 const setAppTheme = (themeName) => {
     // Remove all theme classes
-    document.documentElement.classList.remove('light-theme', 'red-theme', 'green-theme', 'water-theme', 'gold-theme');
+    THEME_CLASSES.forEach(cls => document.documentElement.classList.remove(cls));
     
     // Add selected theme class
-    if (themeName !== 'dark') {
-        document.documentElement.classList.add(`${themeName}-theme`);
-    }
+    document.documentElement.classList.add(`${themeName}-theme`);
     
     // Update logo source based on theme
     const isLight = themeName === 'light';
@@ -89,13 +89,14 @@ const setAppTheme = (themeName) => {
     });
 };
 
-// Initialize Theme on load
-const savedTheme = localStorage.getItem('theme') || 'dark';
+// Initialize Theme on load - Gold is default
+const savedTheme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'gold';
 setAppTheme(savedTheme);
 
 themeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         const selectedTheme = btn.getAttribute('data-theme');
+        localStorage.setItem('patrioti_theme', selectedTheme);
         localStorage.setItem('theme', selectedTheme);
         setAppTheme(selectedTheme);
     });

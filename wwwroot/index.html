@@ -54,10 +54,8 @@
     <link rel="stylesheet" href="css/main.css">
     <script>
         (function() {
-            const theme = localStorage.getItem('theme') || 'dark';
-            if (theme !== 'dark') {
-                document.documentElement.classList.add(theme + '-theme');
-            }
+            const theme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'gold';
+            document.documentElement.classList.add(theme + '-theme');
         })();
     </script>
 </head>
@@ -84,6 +82,10 @@
                     <li><a href="#contact" class="btn-primary">Kontakt</a></li>
                 </ul>
                 <div class="theme-selector">
+                    <button class="theme-btn active" data-theme="gold" title="Vzhled Zlatý (výchozí)">
+                        <span class="theme-icon">✨</span>
+                        <span class="theme-text">Zlatý</span>
+                    </button>
                     <button class="theme-btn" data-theme="dark" title="Tmavý vzhled">
                         <span class="theme-icon">🌙</span>
                         <span class="theme-text">Tmavý</span>
@@ -103,10 +105,6 @@
                     <button class="theme-btn" data-theme="water" title="Vzhled Voda">
                         <span class="theme-icon">💧</span>
                         <span class="theme-text">Voda</span>
-                    </button>
-                    <button class="theme-btn" data-theme="gold" title="Vzhled Zlatý">
-                        <span class="theme-icon">✨</span>
-                        <span class="theme-text">Zlatý</span>
                     </button>
                 </div>
             </nav>
