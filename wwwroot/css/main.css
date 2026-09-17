@@ -120,6 +120,9 @@ h1, h2, h3 {
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -1px;
+    text-decoration: none;
+    color: var(--text-primary);
+    cursor: pointer;
 }
 
 .header-logo-img {
@@ -174,7 +177,7 @@ h1, h2, h3 {
 .nav-list {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
 }
 
