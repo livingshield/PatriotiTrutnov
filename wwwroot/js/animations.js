@@ -119,4 +119,13 @@ if (navToggle && navMenu) {
             navMenu.classList.remove('active');
         });
     });
+
+    // Close menu when clicking the logo
+    const logoLink = document.querySelector('.logo');
+    if (logoLink) {
+        logoLink.addEventListener('click', () => {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    }
 }

@@ -56,9 +56,10 @@ function Delete-RemoteFile($remoteFile) {
 function Upload-Folder($localPath, $remotePath) {
     $items = Get-ChildItem $localPath
     foreach ($item in $items) {
+        if ($item.Name -eq "app_offline.htm" -or $item.Name -eq "app_offline_temp.htm") { continue }
         $target = $remotePath + $item.Name
         if ($item.PSIsContainer) {
-            Ensure-RemoteDir $target
+            Ensure-RemoteDir ($target + "/")
             Upload-Folder $item.FullName ($target + "/")
         }
         else {
@@ -78,7 +79,7 @@ dotnet publish -c Release -o publish
 
 Write-Host "Step 2: Uploading to FTP..."
 # Create temporary app_offline.htm locally
-$appOfflinePath = "$localPath\app_offline.htm"
+$appOfflinePath = "$PSScriptRoot\app_offline_temp.htm"
 $appOfflineContent = @"
 <!DOCTYPE html>
 <html>
