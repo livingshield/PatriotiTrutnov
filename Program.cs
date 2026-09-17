@@ -209,7 +209,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                     <div style='max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb; word-break: break-word; overflow-wrap: break-word;'>
                         <!-- Header -->
                         <div style='background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); padding: 30px 20px; text-align: center;'>
-                            <img src='https://www.ekobio.org/patriotitrutnov/img/PatriotiLogoBlack.png' alt='Patrioti Trutnov Logo' style='height: 90px; width: auto; display: block; margin: 0 auto 15px auto;'>
+                            <img src='https://www.patriotitrutnov.cz/img/PatriotiLogoBlack.png' alt='Patrioti Trutnov Logo' style='height: 90px; width: auto; display: block; margin: 0 auto 15px auto;'>
                             <h1 style='color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;'>Děkujeme za Váš zájem</h1>
                             <p style='color: #94a3b8; margin: 5px 0 0 0; font-size: 14px;'>Iniciativa Patrioti Trutnov</p>
                         </div>

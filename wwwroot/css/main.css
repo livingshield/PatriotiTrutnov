@@ -836,4 +836,353 @@ select option {
     transform: translateY(-2px);
 }
 
+/* Hero Badges & Volte 1 */
+.hero-badges-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.badge-gold {
+    background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%) !important;
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.5px;
+}
+
+.hero-lead-text {
+    font-size: 1.25rem;
+    color: var(--accent-light);
+    font-weight: 500;
+    max-width: 650px;
+    margin: 15px auto 0 auto;
+}
+
+.hero-volte-badge {
+    position: absolute;
+    top: -20px;
+    right: 5%;
+    width: 100px;
+    height: 100px;
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+    animation: pulseBadge 3s ease-in-out infinite;
+    z-index: 5;
+}
+
+.hero-volte-badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes pulseBadge {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.06) rotate(2deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* About Grid */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+/* Candidates Section */
+.candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.candidate-card {
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border-radius: 16px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.candidate-leader {
+    border-color: #eab308 !important;
+    box-shadow: 0 10px 35px rgba(234, 179, 8, 0.18);
+}
+
+.leader-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%);
+    color: #0f172a;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.candidate-photo-wrapper {
+    width: 100%;
+    aspect-ratio: 0.82;
+    overflow: hidden;
+    position: relative;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.candidate-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+}
+
+.candidate-card:hover .candidate-photo {
+    transform: scale(1.04);
+}
+
+.candidate-body {
+    padding: 24px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.candidate-name {
+    font-size: 1.35rem;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.candidate-tag {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.candidate-tag-leader {
+    color: #eab308;
+    font-weight: 700;
+}
+
+.candidate-focus {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 10 Priorities Program Grid */
+.program-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 45px;
+}
+
+.program-card {
+    display: flex;
+    gap: 20px;
+    padding: 28px;
+    position: relative;
+    border-radius: 14px;
+    align-items: flex-start;
+}
+
+.program-number {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    opacity: 0.85;
+    line-height: 1;
+    font-family: 'Outfit', sans-serif;
+    min-width: 45px;
+}
+
+.program-content {
+    flex: 1;
+}
+
+.program-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+}
+
+.program-card h3 {
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.program-card p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.commitments-bar {
+    margin-top: 40px;
+    padding: 25px;
+    border-radius: 12px;
+    border-left: 4px solid var(--accent);
+}
+
+.commitments-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.commitments-items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.commit-item {
+    font-size: 0.95rem;
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+/* Coalition Section */
+.coalition-card {
+    padding: 40px;
+    border-radius: 16px;
+    margin-top: 30px;
+}
+
+.coalition-logos-wrapper {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.coalition-logos-img {
+    max-width: 700px;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.3));
+}
+
+.coalition-parties {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.party-item h4 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.party-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.party-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--border);
+}
+
+/* Downloads Section */
+.downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 35px;
+}
+
+.download-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    border-radius: 14px;
+}
+
+.download-icon {
+    font-size: 2.5rem;
+}
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.download-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0 0 10px 0;
+}
+
+.file-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    text-transform: uppercase;
+}
+
+/* Responsive updates for new sections */
+@media (max-width: 900px) {
+    .about-grid, .candidates-grid, .program-grid, .downloads-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-volte-badge {
+        position: static;
+        margin: 15px auto 0 auto;
+        width: 80px;
+        height: 80px;
+    }
+
+    .party-divider {
+        display: none;
+    }
+
+    .coalition-parties {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .download-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+}
+
 

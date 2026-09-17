@@ -17,3 +17,5 @@ publish/
 appsettings.json
 appsettings.Development.json
 appsettings.Production.json
+qr_crop.png
+wwwroot/img/extracted/
