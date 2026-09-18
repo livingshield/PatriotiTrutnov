@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrace | Patrioti Trutnov</title>
+    <link rel="icon" type="image/png" href="img/PatriotiLogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        :root {
+            --admin-bg: #070c1a;
+            --admin-card: rgba(16, 26, 56, 0.75);
+            --admin-border: rgba(212, 175, 55, 0.25);
+            --admin-accent: #d4af37;
+            --admin-accent-hover: #f3c94d;
+        }
+
+        body {
+            background-color: var(--admin-bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 35, 75, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.8) 0px, transparent 50%);
+            min-height: 100vh;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .admin-header {
+            background: rgba(11, 19, 43, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--admin-border);
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .admin-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .admin-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-badge {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--admin-accent);
+            color: var(--admin-accent);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-admin-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .btn-admin-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .btn-admin-logout {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .btn-admin-logout:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+        .admin-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px 60px 20px;
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Login Card */
+        .login-wrapper {
+            max-width: 440px;
+            margin: 60px auto;
+        }
+
+        .login-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 16px;
+            padding: 36px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(16px);
+        }
+
+        .login-card-header {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+
+        .login-card-header img {
+            height: 60px;
+            margin-bottom: 12px;
+        }
+
+        .login-card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-family: 'Outfit', sans-serif;
+            color: #ffffff;
+        }
+
+        .login-card-header p {
+            margin: 6px 0 0 0;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background: rgba(8, 14, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--admin-accent);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--admin-accent) 0%, #b8860b 100%);
+            color: #0b132b;
+            font-weight: 700;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-gold:hover {
+            background: linear-gradient(135deg, var(--admin-accent-hover) 0%, #d4af37 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-gold:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-bottom: 18px;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #86efac;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Dashboard View */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 26px;
+        }
+
+        .admin-tab-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 12px 18px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-tab-btn:hover {
+            color: #ffffff;
+        }
+
+        .admin-tab-btn.active {
+            color: var(--admin-accent);
+            border-bottom-color: var(--admin-accent);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Settings Card */
+        .settings-card {
+            background: var(--admin-card);
+            border: 1px solid var(--admin-border);
+            border-radius: 16px;
+            padding: 30px;
+            backdrop-filter: blur(16px);
+            margin-bottom: 25px;
+        }
+
+        .settings-card-header {
+            margin-bottom: 22px;
+        }
+
+        .settings-card-header h3 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .settings-card-header p {
+            margin: 8px 0 0 0;
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .info-pill-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0 24px 0;
+            background: rgba(11, 19, 43, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 14px 18px;
+        }
+
+        .info-pill {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-pill code {
+            background: rgba(212, 175, 55, 0.15);
+            color: var(--admin-accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .email-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .email-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(8, 14, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 18px;
+            transition: all 0.2s;
+        }
+
+        .email-item:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            background: rgba(8, 14, 30, 0.9);
+        }
+
+        .email-item-address {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .email-item-badge {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .btn-delete-email {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-delete-email:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+        .add-email-form {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .add-email-form .form-control {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .add-email-form .btn-add {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+            font-weight: 600;
+            padding: 0 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .add-email-form .btn-add:hover {
+            background: rgba(59, 130, 246, 0.4);
+            color: #ffffff;
+        }
+
+        /* Leads Table */
+        .leads-table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--admin-card);
+        }
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            text-align: left;
+        }
+
+        .leads-table th {
+            background: rgba(11, 19, 43, 0.9);
+            color: var(--admin-accent);
+            font-weight: 700;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .leads-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            vertical-align: top;
+        }
+
+        .leads-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .leads-table .lead-name {
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        .leads-table .lead-email a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .leads-table .lead-topic {
+            color: var(--admin-accent);
+            font-weight: 600;
+        }
+
+        .leads-table .lead-msg {
+            max-width: 320px;
+            line-height: 1.4;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+
+        .leads-table .lead-date {
+            white-space: nowrap;
+            color: #94a3b8;
+            font-size: 0.8rem;
+        }
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .empty-state p {
+            margin: 8px 0 0 0;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="admin-header-container">
+            <a href="index.html" class="admin-brand">
+                <img src="img/PatriotiLogoBlack.png" alt="Patrioti Trutnov Logo">
+                <span class="admin-brand-title">Patrioti Trutnov</span>
+                <span class="admin-badge">Administrace</span>
+            </a>
+            <div class="admin-nav-actions" id="adminNavActions" style="display: none;">
+                <span id="adminUsernameDisplay" style="font-size: 0.875rem; color: #94a3b8; font-weight: 600;"></span>
+                <a href="index.html" class="btn-admin-link" target="_blank">🌐 Web</a>
+                <button type="button" id="adminLogoutBtn" class="btn-admin-link btn-admin-logout">Odhlásit</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- 1. Login View -->
+        <div id="loginView" class="login-wrapper">
+            <div class="login-card">
+                <div class="login-card-header">
+                    <img src="img/PatriotiLogoBlack.png" alt="Patrioti Trutnov">
+                    <h2>Přihlášení do administrace</h2>
+                    <p>Zadejte přihlašovací údaje pro správu nastavení</p>
+                </div>
+                <div id="loginError" class="alert-error"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="adminUser">Uživatelské jméno</label>
+                        <input type="text" id="adminUser" class="form-control" placeholder="admin" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPass">Heslo</label>
+                        <input type="password" id="adminPass" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" id="loginBtn" class="btn-gold">Přihlásit se</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 2. Dashboard View -->
+        <div id="dashboardView" style="display: none;">
+            <div class="admin-tabs">
+                <button type="button" class="admin-tab-btn active" data-tab="settingsTab">
+                    ⚙️ Nastavení e-mailů
+                </button>
+                <button type="button" class="admin-tab-btn" data-tab="leadsTab">
+                    📥 Doručené zprávy <span id="leadsCountBadge" class="admin-badge" style="margin-left: 6px; display: none;">0</span>
+                </button>
+            </div>
+
+            <!-- Tab 1: Settings -->
+            <div id="settingsTab" class="tab-pane active">
+                <div class="settings-card">
+                    <div class="settings-card-header">
+                        <h3>📧 Příjemci příchozích e-mailů</h3>
+                        <p>
+                            Zde můžete spravovat seznam e-mailových adres, kam budou přeposílány veškeré poptávky a zprávy z kontaktního formuláře na webu.
+                        </p>
+                    </div>
+
+                    <div class="info-pill-bar">
+                        <div class="info-pill">
+                            <span>📌 <strong>Prefix předmětu:</strong></span>
+                            <code>PatriotiTrutnov_</code>
+                        </div>
+                        <div class="info-pill">
+                            <span>📌 <strong>Odesílatel:</strong></span>
+                            <code>Patrioti Trutnov &lt;info@patriotitrutnov.cz&gt;</code>
+                        </div>
+                        <div class="info-pill">
+                            <span>📌 <strong>Reply-To:</strong></span>
+                            <span>E-mail odesílatele formuláře</span>
+                        </div>
+                    </div>
+
+                    <div id="settingsSuccess" class="alert-success"></div>
+                    <div id="settingsError" class="alert-error"></div>
+
+                    <label style="display: block; font-weight: 700; margin-bottom: 12px; font-size: 0.95rem; color: #cbd5e1;">
+                        Aktivní seznam příjemců notifikací:
+                    </label>
+
+                    <div id="emailListContainer" class="email-list">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <!-- Add New Email -->
+                    <form id="addEmailForm" class="add-email-form">
+                        <input type="email" id="newEmailInput" class="form-control" placeholder="Zadejte novou e-mailovou adresu (např. tym@patriotitrutnov.cz)" required>
+                        <button type="submit" class="btn-add">➕ Přidat e-mail</button>
+                    </form>
+
+                    <div style="margin-top: 25px; display: flex; justify-content: flex-end;">
+                        <button type="button" id="saveSettingsBtn" class="btn-gold" style="width: auto; padding: 12px 28px;">
+                            💾 Uložit nastavení
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Leads -->
+            <div id="leadsTab" class="tab-pane">
+                <div class="settings-card">
+                    <div class="settings-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <h3>📥 Doručené zprávy a kontakty</h3>
+                            <p>Přehled všech odeslaných formulářů od občanů z webu.</p>
+                        </div>
+                        <button type="button" id="refreshLeadsBtn" class="btn-admin-link">🔄 Obnovit zprávy</button>
+                    </div>
+
+                    <div class="leads-table-container">
+                        <table class="leads-table">
+                            <thead>
+                                <tr>
+                                    <th>Datum</th>
+                                    <th>Jméno</th>
+                                    <th>E-mail</th>
+                                    <th>Telefon</th>
+                                    <th>Zajímá mě</th>
+                                    <th>Zpráva / vzkaz</th>
+                                    <th>Akce</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leadsTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                        <div id="leadsEmptyState" class="empty-state" style="display: none;">
+                            <span style="font-size: 2rem;">📭</span>
+                            <p>Zatím nebyly doručeny žádné zprávy.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

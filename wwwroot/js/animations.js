@@ -324,3 +324,12 @@ if (navToggle && navMenu) {
     }
 }
 
+// Shortcut Ctrl + Shift + L to open admin section
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+        e.preventDefault();
+        var base = window.location.pathname.includes('/patriotitrutnov') ? '/patriotitrutnov/admin.html' : '/admin.html';
+        window.location.href = base;
+    }
+});
+
