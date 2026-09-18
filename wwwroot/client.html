@@ -212,6 +212,7 @@
             </a>
             <div class="client-actions">
                 <span id="userNameDisplay" style="font-size: 0.875rem; color: #94a3b8; font-weight: 600;"></span>
+                <a href="admin.html" id="adminZoneLink" class="btn-link" style="display: none; color: #d4af37; border-color: rgba(212, 175, 55, 0.4);">🛡️ Administrace</a>
                 <a href="index.html" class="btn-link" target="_blank">🌐 Web</a>
                 <button type="button" id="logoutBtn" class="btn-link btn-logout">Odhlásit</button>
             </div>
@@ -314,6 +315,11 @@
                 const username = data.username || 'Podporovatel';
                 document.getElementById('userNameDisplay').textContent = username;
                 document.getElementById('clientNameHeader').textContent = username;
+
+                if (data.role === 'admin') {
+                    const adminLink = document.getElementById('adminZoneLink');
+                    if (adminLink) adminLink.style.display = 'inline-flex';
+                }
             } catch (e) { }
 
             document.getElementById('logoutBtn').addEventListener('click', () => {
