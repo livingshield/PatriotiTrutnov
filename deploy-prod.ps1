@@ -76,6 +76,7 @@ Copy-Item "$PSScriptRoot\.env.prod" "$PSScriptRoot\.env" -Force
 
 Write-Host "Step 1: Publishing project..."
 dotnet publish -c Release -o publish
+Copy-Item "$PSScriptRoot\.env.prod" "$localPath\.env" -Force
 
 Write-Host "Step 2: Uploading to FTP..."
 # Create temporary app_offline.htm locally

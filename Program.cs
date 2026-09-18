@@ -112,27 +112,26 @@ using (var scope = app.Services.CreateScope())
 
 app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
 {
-    var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST") ?? config["Smtp:Host"];
+    var smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST") ?? config["Smtp:Host"] ?? "smtp.forpsi.com";
     var smtpPort = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out var port) ? port : (int.TryParse(config["Smtp:Port"], out var p) ? p : 587);
-    var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER") ?? config["Smtp:Username"];
-    var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASS") ?? config["Smtp:Password"];
+    var smtpUser = Environment.GetEnvironmentVariable("SMTP_USER") ?? config["Smtp:Username"] ?? "postmaster@patriotitrutnov.cz";
+    var smtpPass = Environment.GetEnvironmentVariable("SMTP_PASS") ?? config["Smtp:Password"] ?? "R.mnEtu6Xn";
     
-    // Sender address (configured in env files)
-    var fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM") ?? config["Smtp:FromEmail"] ?? "noreply@patriotitrutnov.cz";
+    // Sender address: must ALWAYS be info@patriotitrutnov.cz
+    var fromEmail = "info@patriotitrutnov.cz";
     var fromName = "Patrioti Trutnov";
 
-    // If SMTP_PASS is empty or matches the placeholder, fall back to config settings (using working scio@ekobio.org credentials)
+    // If SMTP_PASS is empty or matches placeholder, fall back to postmaster credentials
     if (string.IsNullOrEmpty(smtpPass) || smtpPass == "DOPLNTE_HESLO_K_EMAILU_ZDE")
     {
-        smtpHost = config["Smtp:Host"];
+        smtpHost = config["Smtp:Host"] ?? "smtp.forpsi.com";
         smtpPort = int.TryParse(config["Smtp:Port"], out var fallbackPort) ? fallbackPort : 587;
-        smtpUser = config["Smtp:Username"];
-        smtpPass = config["Smtp:Password"];
-        fromEmail = config["Smtp:FromEmail"] ?? "scio@ekobio.org";
+        smtpUser = config["Smtp:Username"] ?? "postmaster@patriotitrutnov.cz";
+        smtpPass = config["Smtp:Password"] ?? "R.mnEtu6Xn";
     }
 
     // Admin address for BCC copy
-    var adminEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? fromEmail;
+    var adminEmail = Environment.GetEnvironmentVariable("TARGET_EMAIL") ?? config["Smtp:TargetEmail"] ?? "info@patriotitrutnov.cz";
 
     var dbType = Environment.GetEnvironmentVariable("DB_TYPE") ?? "MSSQL";
     var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
@@ -179,6 +178,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
         {
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(fromName, fromEmail));
+            message.ReplyTo.Add(new MailboxAddress(fromName, fromEmail));
             
             // Recipient is the one who filled out the form ("prijemce, ten kdo je vyplnen")
             message.To.Add(new MailboxAddress(lead.FullName, lead.Email));
@@ -252,7 +252,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
                             <div style='margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #475569;'>
                                 <p style='margin: 0; font-size: 14px; font-weight: 600;'>S pozdravem,</p>
                                 <p style='margin: 3px 0 0 0; font-size: 15px; font-weight: 700; color: #1e3a8a;'>Tým Patrioti Trutnov</p>
-                                <p style='margin: 5px 0 0 0; font-size: 13px;'><a href='https://www.patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>www.patriotitrutnov.cz</a> | <a href='https://www.facebook.com/patriotitrutnov' style='color: #1877f2; text-decoration: none; font-weight: 600;'>Facebook</a></p>
+                                <p style='margin: 5px 0 0 0; font-size: 13px;'><a href='https://www.patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>www.patriotitrutnov.cz</a> | <a href='mailto:info@patriotitrutnov.cz' style='color: #2563eb; text-decoration: none;'>info@patriotitrutnov.cz</a> | <a href='https://www.facebook.com/patriotitrutnov' style='color: #1877f2; text-decoration: none; font-weight: 600;'>Facebook</a></p>
                             </div>
                         </div>
                         
