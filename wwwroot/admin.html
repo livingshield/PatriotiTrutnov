@@ -529,26 +529,13 @@
 
     <!-- Main Content -->
     <main class="admin-main">
-        <!-- 1. Login View -->
-        <div id="loginView" class="login-wrapper">
-            <div class="login-card">
-                <div class="login-card-header">
-                    <img src="img/PatriotiLogoBlack.png" alt="Patrioti Trutnov">
-                    <h2>Přihlášení do administrace</h2>
-                    <p>Zadejte přihlašovací údaje pro správu nastavení</p>
-                </div>
-                <div id="loginError" class="alert-error"></div>
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label for="adminUser">Uživatelské jméno</label>
-                        <input type="text" id="adminUser" class="form-control" placeholder="admin" required autocomplete="username">
-                    </div>
-                    <div class="form-group">
-                        <label for="adminPass">Heslo</label>
-                        <input type="password" id="adminPass" class="form-control" placeholder="••••••••" required autocomplete="current-password">
-                    </div>
-                    <button type="submit" id="loginBtn" class="btn-gold">Přihlásit se</button>
-                </form>
+        <!-- 1. Login View / Redirecting -->
+        <div id="loginView" class="login-wrapper" style="display: none;">
+            <div class="login-card" style="text-align: center; padding: 40px 24px;">
+                <img src="img/PatriotiLogoBlack.png" alt="Patrioti Trutnov" style="height: 60px; margin-bottom: 16px;">
+                <h2 style="font-family: 'Outfit', sans-serif; margin-bottom: 8px; color: #ffffff;">Ověřování oprávnění...</h2>
+                <p style="color: #94a3b8; margin-bottom: 24px;">Pro přístup do administrace je vyžadováno přihlášení.</p>
+                <a href="login.html" class="btn-gold" style="display: inline-block; text-decoration: none; padding: 12px 24px;">Přejít na přihlášení do systému</a>
             </div>
         </div>
 

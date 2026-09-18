@@ -19,3 +19,6 @@ appsettings.Development.json
 appsettings.Production.json
 qr_crop.png
 wwwroot/img/extracted/
+/*.pdf
+dayly_promts.json
+zadani1.txt

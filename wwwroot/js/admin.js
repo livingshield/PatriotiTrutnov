@@ -108,30 +108,38 @@ document.addEventListener('DOMContentLoaded', () => {
         adminLogoutBtn.addEventListener('click', () => {
             localStorage.removeItem('patrioti_admin_token');
             localStorage.removeItem('patrioti_admin_user');
-            showLogin();
+            localStorage.removeItem('patrioti_token');
+            localStorage.removeItem('patrioti_user');
+            localStorage.removeItem('patrioti_role');
+            window.location.href = 'login.html';
         });
     }
 
     // Session verification
     async function checkSession() {
-        const token = localStorage.getItem('patrioti_admin_token');
-        const user = localStorage.getItem('patrioti_admin_user');
+        const token = localStorage.getItem('patrioti_admin_token') || localStorage.getItem('patrioti_token');
+        const user = localStorage.getItem('patrioti_admin_user') || localStorage.getItem('patrioti_user');
 
         if (!token) {
-            showLogin();
+            window.location.href = 'login.html';
             return;
         }
 
         try {
-            const res = await fetch(getApiUrl('api/admin/check'), {
+            const res = await fetch(getApiUrl('api/auth/check'), {
                 headers: { 'Authorization': 'Bearer ' + token }
             });
 
             if (res.ok) {
                 const data = await res.json();
                 if (data.valid) {
-                    showDashboard(data.username || user || 'Admin');
-                    return;
+                    if (data.role === 'admin') {
+                        showDashboard(data.username || user || 'Admin');
+                        return;
+                    } else if (data.role === 'client') {
+                        window.location.href = 'client.html';
+                        return;
+                    }
                 }
             }
         } catch (e) { }
@@ -139,13 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Invalid or expired token
         localStorage.removeItem('patrioti_admin_token');
         localStorage.removeItem('patrioti_admin_user');
-        showLogin();
+        localStorage.removeItem('patrioti_token');
+        localStorage.removeItem('patrioti_user');
+        localStorage.removeItem('patrioti_role');
+        window.location.href = 'login.html';
     }
 
     function showLogin() {
-        if (loginView) loginView.style.display = 'block';
-        if (dashboardView) dashboardView.style.display = 'none';
-        if (adminNavActions) adminNavActions.style.display = 'none';
+        window.location.href = 'login.html';
     }
 
     function showDashboard(username) {
@@ -159,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Settings logic
     async function loadSettings() {
-        const token = localStorage.getItem('patrioti_admin_token');
+        const token = localStorage.getItem('patrioti_admin_token') || localStorage.getItem('patrioti_token');
         if (!token) return;
 
         try {
@@ -240,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save settings
     if (saveSettingsBtn) {
         saveSettingsBtn.addEventListener('click', async () => {
-            const token = localStorage.getItem('patrioti_admin_token');
+            const token = localStorage.getItem('patrioti_admin_token') || localStorage.getItem('patrioti_token');
             if (!token) return;
 
             if (settingsSuccess) settingsSuccess.style.display = 'none';
@@ -290,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Leads logic
     async function loadLeads() {
-        const token = localStorage.getItem('patrioti_admin_token');
+        const token = localStorage.getItem('patrioti_admin_token') || localStorage.getItem('patrioti_token');
         if (!token) return;
 
         if (refreshLeadsBtn) refreshLeadsBtn.textContent = '⏳ Načítám...';

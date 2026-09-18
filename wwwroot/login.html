@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení do systému | Patrioti Trutnov</title>
+    <link rel="icon" type="image/png" href="img/PatriotiLogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #070d1a;
+            --card-bg: rgba(10, 18, 38, 0.92);
+            --card-border: rgba(30, 58, 110, 0.45);
+            --accent-gold: #d4af37;
+            --accent-blue: #2563eb;
+            --accent-cyan: #38bdf8;
+            --input-bg: rgba(7, 13, 27, 0.95);
+            --input-border: rgba(30, 58, 110, 0.6);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(14, 34, 77, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(10, 20, 42, 0.8) 0px, transparent 50%);
+            min-height: 100vh;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 44px 34px 36px 34px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 30px rgba(14, 40, 90, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Top Brand Header */
+        .login-brand-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo-badge {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 16px auto;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fce38a 0%, #d4af37 50%, #b8860b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-logo-badge span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #070d1a;
+            line-height: 1;
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.65rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .brand-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #64748b;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .form-control {
+            width: 100%;
+            height: 48px;
+            padding: 12px 14px 12px 44px;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .form-control::placeholder {
+            color: #475569;
+        }
+
+        .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            background: rgba(8, 16, 36, 0.98);
+        }
+
+        .form-control:focus + .input-icon,
+        .input-wrapper:focus-within .input-icon {
+            color: #38bdf8;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            height: 50px;
+            margin-top: 10px;
+            background: linear-gradient(135deg, #122852 0%, #0d1e3d 100%);
+            border: 1px solid #2563eb;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: linear-gradient(135deg, #1a3875 0%, #122852 100%);
+            border-color: #38bdf8;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Alerts */
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+
+        /* Bottom Footer Link */
+        .login-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <!-- Brand Header Inspired by Reference Image -->
+        <div class="login-brand-header">
+            <div class="brand-logo-badge">
+                <span>P</span>
+            </div>
+            <h1 class="brand-title">Patrioti Trutnov</h1>
+            <p class="brand-subtitle">Přihlášení do systému</p>
+        </div>
+
+        <div id="loginError" class="alert-error"></div>
+
+        <!-- Form -->
+        <form id="unifiedLoginForm">
+            <div class="form-group">
+                <label for="emailInput">E-mail</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2"/>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="emailInput" class="form-control" placeholder="vas@email.cz" required autocomplete="username" autofocus>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="passwordInput">Heslo</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </span>
+                    <input type="password" id="passwordInput" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn-submit">
+                Přihlásit se
+            </button>
+        </form>
+
+        <!-- Back to Public Site -->
+        <div class="login-footer">
+            <a href="index.html" class="back-link">
+                ← Zpět na veřejný web
+            </a>
+        </div>
+    </div>
+
+    <script>
+        window.getApiUrl = function(endpoint) {
+            var clean = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+            var path = window.location.pathname;
+            var base = '/';
+            if (path.includes('/patriotitrutnov')) {
+                base = '/patriotitrutnov/';
+            }
+            return base + clean;
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if already authenticated
+            const token = localStorage.getItem('patrioti_token') || localStorage.getItem('patrioti_admin_token');
+            if (token) {
+                try {
+                    const res = await fetch(getApiUrl('api/auth/check'), {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.valid) {
+                            if (data.role === 'admin') {
+                                window.location.href = 'admin.html';
+                                return;
+                            } else {
+                                window.location.href = 'client.html';
+                                return;
+                            }
+                        }
+                    }
+                } catch (e) { }
+            }
+
+            const form = document.getElementById('unifiedLoginForm');
+            const emailInput = document.getElementById('emailInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const loginError = document.getElementById('loginError');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+
+                if (loginError) loginError.style.display = 'none';
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Ověřuji...';
+
+                try {
+                    const res = await fetch(getApiUrl('api/auth/login'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        localStorage.setItem('patrioti_token', data.token);
+                        localStorage.setItem('patrioti_user', data.username || email);
+                        localStorage.setItem('patrioti_role', data.role);
+
+                        // Backwards compatibility for admin.js
+                        if (data.role === 'admin') {
+                            localStorage.setItem('patrioti_admin_token', data.token);
+                            localStorage.setItem('patrioti_admin_user', data.username || email);
+                        }
+
+                        // Smart redirect based on detected role
+                        if (data.role === 'admin') {
+                            window.location.href = 'admin.html';
+                        } else {
+                            window.location.href = 'client.html';
+                        }
+                    } else {
+                        if (loginError) {
+                            loginError.textContent = data.message || 'Neplatný e-mail nebo heslo.';
+                            loginError.style.display = 'block';
+                        }
+                    }
+                } catch (err) {
+                    if (loginError) {
+                        loginError.textContent = 'Chyba připojení k serveru.';
+                        loginError.style.display = 'block';
+                    }
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Přihlásit se';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

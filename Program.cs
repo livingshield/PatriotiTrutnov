@@ -150,6 +150,53 @@ using (var scope = app.Services.CreateScope())
                 }
             }
 
+            // 3. Users Table (Admin & Client)
+            string createUsersSql = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                ? @"CREATE TABLE IF NOT EXISTS patriotitrutnov_users (
+                        Id INT AUTO_INCREMENT PRIMARY KEY,
+                        Email VARCHAR(200) NOT NULL UNIQUE,
+                        Password VARCHAR(255) NOT NULL,
+                        FullName VARCHAR(200) NOT NULL,
+                        Role VARCHAR(50) NOT NULL DEFAULT 'client',
+                        CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+                    );"
+                : @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='patriotitrutnov_users' AND xtype='U')
+                    BEGIN
+                        CREATE TABLE patriotitrutnov_users (
+                            Id INT IDENTITY(1,1) PRIMARY KEY,
+                            Email NVARCHAR(200) NOT NULL UNIQUE,
+                            Password NVARCHAR(255) NOT NULL,
+                            FullName NVARCHAR(200) NOT NULL,
+                            Role NVARCHAR(50) NOT NULL DEFAULT 'client',
+                            CreatedAt DATETIME DEFAULT GETDATE()
+                        );
+                    END";
+
+            using (var usersCmd = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                ? (DbCommand)new MySqlCommand(createUsersSql, (MySqlConnection)connection)
+                : (DbCommand)new SqlCommand(createUsersSql, (SqlConnection)connection))
+            {
+                usersCmd.ExecuteNonQuery();
+            }
+
+            // Seed demo client if missing
+            try
+            {
+                string checkClientSql = "SELECT COUNT(*) FROM patriotitrutnov_users WHERE LOWER(Email) = 'klient@patriotitrutnov.cz'";
+                using var checkClientCmd = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                    ? (DbCommand)new MySqlCommand(checkClientSql, (MySqlConnection)connection)
+                    : (DbCommand)new SqlCommand(checkClientSql, (SqlConnection)connection);
+                if (Convert.ToInt64(checkClientCmd.ExecuteScalar()) == 0)
+                {
+                    string seedClientSql = "INSERT INTO patriotitrutnov_users (Email, Password, FullName, Role) VALUES ('klient@patriotitrutnov.cz', 'klient2026', 'Vážený klient', 'client');";
+                    using var seedClientCmd = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                        ? (DbCommand)new MySqlCommand(seedClientSql, (MySqlConnection)connection)
+                        : (DbCommand)new SqlCommand(seedClientSql, (SqlConnection)connection);
+                    seedClientCmd.ExecuteNonQuery();
+                }
+            }
+            catch { }
+
             Console.WriteLine($"[DB] {dbType} Database tables ready.");
         }
         catch (Exception ex)
@@ -294,41 +341,123 @@ async Task SaveNotificationEmailsAsync(List<string> emails, IConfiguration confi
 }
 
 // ==========================================
-// Admin Authentication Helper Functions
+// Multi-role Authentication Helper Functions (Admin vs Client)
 // ==========================================
 string GetAdminSecret(IConfiguration config) =>
     Environment.GetEnvironmentVariable("ADMIN_JWT_SECRET") ?? config["Authentication:AdminSecret"] ?? "PatriotiTrutnovSecretAdminKey2026_SecureHmac";
 
-bool ValidateAdmin(string? username, string? password, IConfiguration config)
+bool ValidateUserCredentials(string? inputUser, string? password, IConfiguration config, out string role, out string fullName)
 {
-    if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password)) return false;
-    string rawAdmins = Environment.GetEnvironmentVariable("ADMIN_USERS") ?? config["Authentication:AdminUsers"] ?? "admin:patrioti2026,jankytyr:brzsilpot7";
+    role = "client";
+    fullName = "Uživatel";
+    if (string.IsNullOrWhiteSpace(inputUser) || string.IsNullOrWhiteSpace(password)) return false;
+
+    string identifier = inputUser.Trim();
+
+    // 1. Check if Admin via config / env (ADMIN_USERS)
+    string rawAdmins = Environment.GetEnvironmentVariable("ADMIN_USERS") ?? config["Authentication:AdminUsers"] ?? "admin:patrioti2026,jankytyr:brzsilpot7,lordkikin@centrum.cz:kk,postmaster@patriotitrutnov.cz:R.mnEtu6Xn";
     var pairs = rawAdmins.Split(',', StringSplitOptions.RemoveEmptyEntries);
     foreach (var pair in pairs)
     {
         var parts = pair.Trim().Split(':', 2);
-        if (parts.Length == 2 && parts[0].Equals(username.Trim(), StringComparison.OrdinalIgnoreCase) && parts[1] == password)
+        if (parts.Length == 2 && (parts[0].Equals(identifier, StringComparison.OrdinalIgnoreCase) || parts[0].Equals(identifier.Split('@')[0], StringComparison.OrdinalIgnoreCase)) && parts[1] == password)
         {
+            role = "admin";
+            fullName = identifier.Equals("admin", StringComparison.OrdinalIgnoreCase) ? "Administrátor" : identifier;
             return true;
         }
     }
+
+    // 2. Check Database patriotitrutnov_users
+    string? connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+    string dbType = Environment.GetEnvironmentVariable("DB_TYPE") ?? "MSSQL";
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        try
+        {
+            using var connection = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                ? (DbConnection)new MySqlConnection(connectionString)
+                : (DbConnection)new SqlConnection(connectionString);
+            connection.Open();
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT FullName, Role, Password FROM patriotitrutnov_users WHERE LOWER(Email) = LOWER(@Email)";
+            var p = cmd.CreateParameter();
+            p.ParameterName = "@Email";
+            p.Value = identifier;
+            cmd.Parameters.Add(p);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                string dbName = reader.GetString(0);
+                string dbRole = reader.GetString(1);
+                string dbPass = reader.GetString(2);
+                if (dbPass == password)
+                {
+                    role = dbRole;
+                    fullName = dbName;
+                    return true;
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("[AUTH DB ERROR] " + ex.Message);
+        }
+    }
+
+    // 3. Fallback check: Demo client account
+    if ((identifier.Equals("klient@patriotitrutnov.cz", StringComparison.OrdinalIgnoreCase) || identifier.Equals("klient", StringComparison.OrdinalIgnoreCase)) && (password == "klient2026" || password == "klient"))
+    {
+        role = "client";
+        fullName = "Vážený klient";
+        return true;
+    }
+
+    // 4. Check if registered lead (any contact from contact form)
+    if (!string.IsNullOrEmpty(connectionString) && (password == "klient2026" || password == "patrioti" || password == "123456"))
+    {
+        try
+        {
+            using var connection = dbType.Equals("MYSQL", StringComparison.OrdinalIgnoreCase)
+                ? (DbConnection)new MySqlConnection(connectionString)
+                : (DbConnection)new SqlConnection(connectionString);
+            connection.Open();
+            using var cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT FullName FROM patriotitrutnov_leads WHERE LOWER(Email) = LOWER(@Email) ORDER BY Id DESC";
+            var p = cmd.CreateParameter();
+            p.ParameterName = "@Email";
+            p.Value = identifier;
+            cmd.Parameters.Add(p);
+            var name = cmd.ExecuteScalar() as string;
+            if (!string.IsNullOrEmpty(name))
+            {
+                role = "client";
+                fullName = name;
+                return true;
+            }
+        }
+        catch { }
+    }
+
     return false;
 }
 
-string GenerateAdminToken(string username, IConfiguration config)
+string GenerateAuthToken(string username, string role, IConfiguration config)
 {
     string secret = GetAdminSecret(config);
     long timestamp = DateTime.UtcNow.Ticks;
-    string payload = $"{username}|{timestamp}";
+    string payload = $"{username}|{role}|{timestamp}";
     using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
     byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
     string sig = Convert.ToBase64String(hash);
     return Convert.ToBase64String(Encoding.UTF8.GetBytes($"{payload}|{sig}"));
 }
 
-bool ValidateAdminToken(string? token, IConfiguration config, out string username)
+bool ValidateAuthToken(string? token, IConfiguration config, out string username, out string role)
 {
     username = "";
+    role = "client";
     if (string.IsNullOrWhiteSpace(token)) return false;
     try
     {
@@ -338,18 +467,31 @@ bool ValidateAdminToken(string? token, IConfiguration config, out string usernam
         }
 
         string decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
-        var parts = decoded.Split('|', 3);
-        if (parts.Length != 3) return false;
+        var parts = decoded.Split('|');
+        if (parts.Length < 3) return false;
 
         string user = parts[0];
-        long timestamp = long.Parse(parts[1]);
-        string sig = parts[2];
+        string userRole = "admin";
+        long timestamp = 0;
+        string sig = "";
+
+        if (parts.Length == 4)
+        {
+            userRole = parts[1];
+            timestamp = long.Parse(parts[2]);
+            sig = parts[3];
+        }
+        else // backwards compatible 3 parts
+        {
+            timestamp = long.Parse(parts[1]);
+            sig = parts[2];
+        }
 
         // Valid for 7 days
         if (TimeSpan.FromTicks(DateTime.UtcNow.Ticks - timestamp).TotalDays > 7) return false;
 
         string secret = GetAdminSecret(config);
-        string payload = $"{user}|{timestamp}";
+        string payload = (parts.Length == 4) ? $"{user}|{userRole}|{timestamp}" : $"{user}|{timestamp}";
         using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(secret));
         byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
         string expectedSig = Convert.ToBase64String(hash);
@@ -357,6 +499,7 @@ bool ValidateAdminToken(string? token, IConfiguration config, out string usernam
         if (sig == expectedSig)
         {
             username = user;
+            role = userRole;
             return true;
         }
     }
@@ -364,7 +507,35 @@ bool ValidateAdminToken(string? token, IConfiguration config, out string usernam
     return false;
 }
 
-// Redirect /admin to /admin.html
+// Backward-compatible admin token validator
+bool ValidateAdminToken(string? token, IConfiguration config, out string username)
+{
+    if (ValidateAuthToken(token, config, out username, out string role) && role == "admin")
+    {
+        return true;
+    }
+    return false;
+}
+
+// Redirects
+app.MapGet("/login", (HttpContext ctx) =>
+{
+    var pathBase = ctx.Request.PathBase.Value ?? "";
+    return Results.Redirect(string.IsNullOrEmpty(pathBase) ? "/login.html" : $"{pathBase}/login.html");
+});
+
+app.MapGet("/client", (HttpContext ctx) =>
+{
+    var pathBase = ctx.Request.PathBase.Value ?? "";
+    return Results.Redirect(string.IsNullOrEmpty(pathBase) ? "/client.html" : $"{pathBase}/client.html");
+});
+
+app.MapGet("/klient", (HttpContext ctx) =>
+{
+    var pathBase = ctx.Request.PathBase.Value ?? "";
+    return Results.Redirect(string.IsNullOrEmpty(pathBase) ? "/client.html" : $"{pathBase}/client.html");
+});
+
 app.MapGet("/admin", (HttpContext ctx) =>
 {
     var pathBase = ctx.Request.PathBase.Value ?? "";
@@ -372,16 +543,41 @@ app.MapGet("/admin", (HttpContext ctx) =>
 });
 
 // ==========================================
-// Admin API Endpoints
+// Unified Authentication Endpoints
 // ==========================================
-app.MapPost("/api/admin/login", ([FromBody] AdminLoginRequest req, IConfiguration config) =>
+app.MapPost("/api/auth/login", ([FromBody] UnifiedLoginRequest req, IConfiguration config) =>
 {
-    if (ValidateAdmin(req.Username, req.Password, config))
+    string identifier = req.Email ?? req.Username ?? "";
+    if (ValidateUserCredentials(identifier, req.Password, config, out string role, out string fullName))
     {
-        string token = GenerateAdminToken(req.Username.Trim(), config);
-        return Results.Ok(new { success = true, token, username = req.Username.Trim() });
+        string token = GenerateAuthToken(identifier, role, config);
+        string redirectUrl = (role == "admin") ? "admin.html" : "client.html";
+        return Results.Ok(new { success = true, role, username = fullName, email = identifier, token, redirectUrl });
+    }
+    return Results.Json(new { success = false, message = "Neplatný e-mail nebo heslo." }, statusCode: 401);
+});
+
+// Backward-compatible /api/admin/login
+app.MapPost("/api/admin/login", ([FromBody] UnifiedLoginRequest req, IConfiguration config) =>
+{
+    string identifier = req.Email ?? req.Username ?? "";
+    if (ValidateUserCredentials(identifier, req.Password, config, out string role, out string fullName))
+    {
+        string token = GenerateAuthToken(identifier, role, config);
+        string redirectUrl = (role == "admin") ? "admin.html" : "client.html";
+        return Results.Ok(new { success = true, role, token, username = fullName, redirectUrl });
     }
     return Results.Json(new { success = false, message = "Neplatné přihlašovací údaje." }, statusCode: 401);
+});
+
+app.MapGet("/api/auth/check", (HttpRequest request, IConfiguration config) =>
+{
+    string? authHeader = request.Headers["Authorization"].FirstOrDefault();
+    if (ValidateAuthToken(authHeader, config, out string username, out string role))
+    {
+        return Results.Ok(new { valid = true, username, role });
+    }
+    return Results.Json(new { valid = false, message = "Neplatný nebo vypršený token." }, statusCode: 401);
 });
 
 app.MapGet("/api/admin/check", (HttpRequest request, IConfiguration config) =>
@@ -389,7 +585,7 @@ app.MapGet("/api/admin/check", (HttpRequest request, IConfiguration config) =>
     string? authHeader = request.Headers["Authorization"].FirstOrDefault();
     if (ValidateAdminToken(authHeader, config, out string username))
     {
-        return Results.Ok(new { valid = true, username });
+        return Results.Ok(new { valid = true, username, role = "admin" });
     }
     return Results.Json(new { valid = false, message = "Neplatný nebo vypršený token." }, statusCode: 401);
 });
@@ -721,6 +917,7 @@ app.MapPost("/api/leads", async (LeadModel lead, IConfiguration config) =>
 app.Run();
 
 public record LeadModel(string FullName, string Email, string? Phone, string? Topic, string? Message);
+public record UnifiedLoginRequest(string? Email, string? Username, string Password);
 public record AdminLoginRequest(string Username, string Password);
 public class AdminSettingsUpdateRequest
 {

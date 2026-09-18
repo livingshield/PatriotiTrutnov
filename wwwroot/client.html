@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klientská zóna | Patrioti Trutnov</title>
+    <link rel="icon" type="image/png" href="img/PatriotiLogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        :root {
+            --client-bg: #070c1a;
+            --client-card: rgba(14, 24, 52, 0.85);
+            --client-border: rgba(37, 99, 235, 0.3);
+            --accent-gold: #d4af37;
+        }
+
+        body {
+            background-color: var(--client-bg);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 35, 75, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.8) 0px, transparent 50%);
+            min-height: 100vh;
+            color: #f1f5f9;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        .client-header {
+            background: rgba(11, 19, 43, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--client-border);
+            padding: 14px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .client-header-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .client-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #ffffff;
+        }
+
+        .client-brand img {
+            height: 38px;
+            width: auto;
+        }
+
+        .client-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .client-badge {
+            background: rgba(37, 99, 235, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #60a5fa;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .client-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-link {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-link:hover {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+        }
+
+        .client-main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 35px 20px 60px 20px;
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(14, 28, 60, 0.9) 0%, rgba(10, 18, 40, 0.9) 100%);
+            border: 1px solid var(--client-border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .welcome-card h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .section-card {
+            background: var(--client-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 26px;
+        }
+
+        .section-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .download-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(8, 14, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .download-item:hover {
+            border-color: #3b82f6;
+            background: rgba(14, 28, 60, 0.8);
+            transform: translateX(4px);
+        }
+
+        .download-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .download-meta {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header class="client-header">
+        <div class="client-header-container">
+            <a href="index.html" class="client-brand">
+                <img src="img/PatriotiLogoBlack.png" alt="Patrioti Trutnov Logo">
+                <span class="client-brand-title">Patrioti Trutnov</span>
+                <span class="client-badge">Klientská zóna</span>
+            </a>
+            <div class="client-actions">
+                <span id="userNameDisplay" style="font-size: 0.875rem; color: #94a3b8; font-weight: 600;"></span>
+                <a href="index.html" class="btn-link" target="_blank">🌐 Web</a>
+                <button type="button" id="logoutBtn" class="btn-link btn-logout">Odhlásit</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="client-main">
+        <div class="welcome-card">
+            <h2>Vítejte v klientské zóně, <span id="clientNameHeader" style="color: var(--accent-gold);">vážený podporovateli</span>!</h2>
+            <p>
+                Děkujeme za Váš zájem a podporu iniciativy Patrioti Trutnov. V tomto přehledu máte přístup k oficiálním materiálům pro kampaň a možnost přímého kontaktu s naším týmem.
+            </p>
+        </div>
+
+        <div class="grid-2">
+            <!-- Materiály ke stažení -->
+            <div class="section-card">
+                <h3>📄 Materiály pro podporovatele</h3>
+                
+                <a href="pdf/Plakat_v32_Patrioti_Trutnov_A4_tisk.pdf" target="_blank" class="download-item">
+                    <div>
+                        <div class="download-title">Volební program & priority (A4 tisk)</div>
+                        <div class="download-meta">PDF dokument pro tisk a roznos</div>
+                    </div>
+                    <span style="font-size: 1.2rem;">📥</span>
+                </a>
+
+                <a href="pdf/RajchlHurdalkovaHynek.pdf" target="_blank" class="download-item">
+                    <div>
+                        <div class="download-title">Pozvánka na besedu (Krakonošovo nám.)</div>
+                        <div class="download-meta">Oficiální plakát v tiskové kvalitě (PDF)</div>
+                    </div>
+                    <span style="font-size: 1.2rem;">📥</span>
+                </a>
+
+                <a href="img/PatriotiBanner.png" download class="download-item">
+                    <div>
+                        <div class="download-title">Grafický banner na sociální sítě</div>
+                        <div class="download-meta">PNG grafika v plném rozlišení</div>
+                    </div>
+                    <span style="font-size: 1.2rem;">📥</span>
+                </a>
+            </div>
+
+            <!-- Kontakty a podpora -->
+            <div class="section-card">
+                <h3>✉️ Kontakt s volebním štábem</h3>
+                <p style="color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;">
+                    Máte dotaz na kandidáty, zájem o umístění volební plachty na plot/balkon, nebo nám chcete předat podnět k dění v Trutnově?
+                </p>
+                
+                <div style="background: rgba(8, 14, 30, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 18px; margin-bottom: 20px;">
+                    <p style="margin: 0; font-size: 0.9rem; color: #cbd5e1;"><strong>Oficiální e-mail:</strong> <a href="mailto:info@patriotitrutnov.cz" style="color: #60a5fa; text-decoration: none;">info@patriotitrutnov.cz</a></p>
+                    <p style="margin: 8px 0 0 0; font-size: 0.9rem; color: #cbd5e1;"><strong>Facebook:</strong> <a href="https://www.facebook.com/patriotitrutnov" target="_blank" style="color: #60a5fa; text-decoration: none;">facebook.com/patriotitrutnov</a></p>
+                </div>
+
+                <a href="mailto:info@patriotitrutnov.cz?subject=Dotaz%20z%20klientsk%C3%A9%20z%C3%B3ny" class="download-item" style="justify-content: center; background: rgba(37, 99, 235, 0.2); border-color: rgba(59, 130, 246, 0.4);">
+                    <span style="font-weight: 700; color: #60a5fa;">Napsat e-mail lídrům kandidátky</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        window.getApiUrl = function(endpoint) {
+            var clean = endpoint.startsWith('/') ? endpoint.substring(1) : endpoint;
+            var path = window.location.pathname;
+            var base = '/';
+            if (path.includes('/patriotitrutnov')) {
+                base = '/patriotitrutnov/';
+            }
+            return base + clean;
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('patrioti_token') || localStorage.getItem('patrioti_admin_token');
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                const res = await fetch(getApiUrl('api/auth/check'), {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (!res.ok) {
+                    localStorage.removeItem('patrioti_token');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const data = await res.json();
+                if (!data.valid) {
+                    localStorage.removeItem('patrioti_token');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const username = data.username || 'Podporovatel';
+                document.getElementById('userNameDisplay').textContent = username;
+                document.getElementById('clientNameHeader').textContent = username;
+            } catch (e) { }
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                localStorage.removeItem('patrioti_token');
+                localStorage.removeItem('patrioti_admin_token');
+                localStorage.removeItem('patrioti_user');
+                localStorage.removeItem('patrioti_role');
+                window.location.href = 'login.html';
+            });
+        });
+    </script>
+</body>
+</html>
