@@ -45,15 +45,16 @@ const headerLogo = document.querySelector('.header-logo-img');
 const footerLogo = document.querySelector('.footer-logo-img');
 const favicon = document.querySelector('link[rel="icon"]');
 
-const THEME_CLASSES = ['dark-theme', 'light-theme', 'red-theme', 'green-theme', 'water-theme', 'gold-theme'];
+const THEME_CLASSES = ['dark-theme', 'light-theme', 'red-theme', 'green-theme', 'water-theme', 'gold-theme', 'patrioti-theme'];
 
 const THEME_META = {
-    gold:  { name: 'Zlatý',  icon: '✨' },
-    dark:  { name: 'Tmavý',  icon: '🌙' },
-    light: { name: 'Světlý', icon: '☀️' },
-    red:   { name: 'Plamen', icon: '🔥' },
-    green: { name: 'Les',    icon: '🌲' },
-    water: { name: 'Voda',   icon: '💧' }
+    patrioti: { name: 'Patrioti', icon: '🛡️' },
+    gold:     { name: 'Zlatý',    icon: '✨' },
+    dark:     { name: 'Tmavý',    icon: '🌙' },
+    light:    { name: 'Světlý',   icon: '☀️' },
+    red:      { name: 'Plamen',   icon: '🔥' },
+    green:    { name: 'Les',      icon: '🌲' },
+    water:    { name: 'Voda',     icon: '💧' }
 };
 
 const setAppTheme = (themeName) => {

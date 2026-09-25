@@ -114,6 +114,23 @@
     --btn-text: #ffffff;
 }
 
+.patrioti-theme {
+    --bg-deep: #08111d;
+    --bg-surface: #0e1d33;
+    --bg-glass: rgba(14, 29, 51, 0.88);
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --border: rgba(0, 194, 203, 0.28);
+    --input-bg: rgba(255, 255, 255, 0.04);
+    --header-bg: rgba(8, 17, 29, 0.90);
+    --accent: #00c2cb;
+    --accent-light: #38e1ea;
+    --accent-gradient: linear-gradient(135deg, #00c2cb 0%, #0284c7 45%, #f59e0b 100%);
+    --selector-bg: rgba(255, 255, 255, 0.08);
+    --btn-text: #08111d;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -2147,7 +2164,37 @@ select option {
     border-color: rgba(202, 138, 4, 0.25);
 }
 
+/* Patrioti Theme Overrides */
+.patrioti-theme .candidates-table-container {
+    background: rgba(8, 17, 29, 0.75);
+    border-color: rgba(0, 194, 203, 0.28);
+}
+.patrioti-theme .candidates-table tbody tr:hover {
+    background: rgba(0, 194, 203, 0.08);
+}
+.patrioti-theme .candidate-row.candidate-leader-row {
+    background: rgba(0, 194, 203, 0.05);
+}
+.patrioti-theme .num-badge {
+    background: rgba(0, 194, 203, 0.16);
+    color: #38e1ea;
+    border-color: rgba(0, 194, 203, 0.35);
+}
+.patrioti-theme .loc-tag {
+    background: rgba(0, 194, 203, 0.08);
+    border-color: rgba(0, 194, 203, 0.2);
+    color: #cbd5e1;
+}
+.patrioti-theme .candidate-leader {
+    border-color: rgba(245, 158, 11, 0.45);
+    box-shadow: 0 10px 30px rgba(0, 194, 203, 0.12);
+}
+.patrioti-theme .filter-chip.active {
+    box-shadow: 0 4px 12px rgba(0, 194, 203, 0.35);
+}
+
 /* No results block */
+
 .candidates-no-results {
     text-align: center;
     padding: 40px 20px;
