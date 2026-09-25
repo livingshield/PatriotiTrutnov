@@ -333,3 +333,135 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ==========================================
+// 9. Full Candidate List (33 Candidates)
+// ==========================================
+let currentCandidateFilter = 'all';
+
+function toggleCandidatesList() {
+    const content = document.getElementById('candidatesFullContent');
+    const btn = document.getElementById('toggleCandidatesBtn');
+    if (!content || !btn) return;
+
+    const isCollapsed = content.classList.contains('collapsed');
+    if (isCollapsed) {
+        content.classList.remove('collapsed');
+        btn.classList.add('active');
+        btn.innerHTML = '<span class="btn-icon">▲</span> <span class="btn-text">Skrýt kandidátku</span>';
+        
+        // Focus search input on desktop if visible
+        const searchInput = document.getElementById('candidateSearchInput');
+        if (searchInput && window.innerWidth > 768) {
+            setTimeout(() => searchInput.focus(), 300);
+        }
+    } else {
+        content.classList.add('collapsed');
+        btn.classList.remove('active');
+        btn.innerHTML = '<span class="btn-icon">📋</span> <span class="btn-text">Zobrazit všech 33 kandidátů</span>';
+    }
+}
+
+function setCandidateFilter(filterGroup) {
+    currentCandidateFilter = filterGroup;
+    
+    // Update active chip state
+    const chips = document.querySelectorAll('.filter-chip');
+    chips.forEach(chip => {
+        if (chip.getAttribute('data-filter') === filterGroup) {
+            chip.classList.add('active');
+        } else {
+            chip.classList.remove('active');
+        }
+    });
+
+    filterCandidates();
+}
+
+function clearCandidateSearch() {
+    const searchInput = document.getElementById('candidateSearchInput');
+    const clearBtn = document.getElementById('candidateSearchClear');
+    if (searchInput) {
+        searchInput.value = '';
+    }
+    if (clearBtn) {
+        clearBtn.style.display = 'none';
+    }
+    setCandidateFilter('all');
+}
+
+function filterCandidates() {
+    const searchInput = document.getElementById('candidateSearchInput');
+    const clearBtn = document.getElementById('candidateSearchClear');
+    const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+    
+    if (clearBtn) {
+        clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    const rows = document.querySelectorAll('#candidatesTable tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+        const name = row.getAttribute('data-name') || '';
+        const occ = row.getAttribute('data-occ') || '';
+        const loc = row.getAttribute('data-loc') || '';
+        const num = row.getAttribute('data-num') || '';
+        const locGroup = row.getAttribute('data-loc-group') || '';
+
+        // Match filter group
+        let matchesGroup = (currentCandidateFilter === 'all') || (locGroup === currentCandidateFilter);
+
+        // Match query
+        let matchesQuery = !query || 
+            name.includes(query) || 
+            occ.includes(query) || 
+            loc.includes(query) || 
+            num === query;
+
+        if (matchesGroup && matchesQuery) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+
+    // Update count info
+    const countInfo = document.getElementById('candidatesCountInfo');
+    if (countInfo) {
+        if (query || currentCandidateFilter !== 'all') {
+            countInfo.innerHTML = `Nalezeno <strong>${visibleCount}</strong> z 33 kandidátů`;
+        } else {
+            countInfo.innerHTML = `Zobrazeno <strong>33</strong> kandidátů`;
+        }
+    }
+
+    // Toggle no results state
+    const noResults = document.getElementById('candidatesNoResults');
+    const tableContainer = document.querySelector('.candidates-table-container');
+    if (noResults && tableContainer) {
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+            tableContainer.style.display = 'none';
+        } else {
+            noResults.style.display = 'none';
+            tableContainer.style.display = 'block';
+        }
+    }
+}
+
+// Auto-expand if URL has hash #kandidatka or #kandidatni-listina
+window.addEventListener('DOMContentLoaded', () => {
+    if (window.location.hash === '#kandidatka' || window.location.hash === '#kandidatni-listina') {
+        const content = document.getElementById('candidatesFullContent');
+        if (content && content.classList.contains('collapsed')) {
+            toggleCandidatesList();
+            setTimeout(() => {
+                const el = document.getElementById('kandidatka');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 250);
+        }
+    }
+});
+
+

@@ -263,15 +263,352 @@
                     </div>
                 </div>
 
-                <!-- Notice: Full 33 candidates list -->
-                <div class="candidates-full-notice glass-card reveal">
-                    <div class="notice-icon">📋</div>
-                    <div class="notice-body">
-                        <h4>Kompletní kandidátní listina (všech 33 kandidátů)</h4>
-                        <p>Kandidátku Patriotů Trutnov (č. 1) tvoří 33 aktivních sousedů, učitelů, lékařů, živnostníků a patriotů z celého města – od centra přes Poříčí, HSM, Babí až po Lhotu.</p>
+                <!-- Kompletní kandidátní listina (všech 33 kandidátů) -->
+                <div class="candidates-full-wrapper glass-card reveal" id="kandidatka">
+                    <div class="candidates-full-header">
+                        <div class="notice-icon">📋</div>
+                        <div class="notice-body">
+                            <div class="kandidatka-badge-row">
+                                <span class="badge">Volební strana č. 1</span>
+                                <span class="badge badge-accent">33 kandidátů</span>
+                            </div>
+                            <h4>Kompletní kandidátní listina (všech 33 kandidátů)</h4>
+                            <p>Kandidátní listina pro volby do zastupitelstva města Trutnov konané ve dnech 9. a 10. října 2026.<br class="hide-mobile">
+                            Volební strana: <strong>PATRIOTI TRUTNOV</strong> s&nbsp;podporou PRO, SPD, Svobodných a nezávislých kandidátů.</p>
+                        </div>
+                        <div class="notice-action">
+                            <button type="button" id="toggleCandidatesBtn" class="btn-primary" onclick="toggleCandidatesList()">
+                                <span class="btn-icon">📋</span>
+                                <span class="btn-text">Zobrazit všech 33 kandidátů</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="notice-action">
-                        <a href="#contact" class="btn-secondary">Chci upozornit na zveřejnění</a>
+
+                    <!-- Rozbalovací obsah kandidátky -->
+                    <div id="candidatesFullContent" class="candidates-full-content collapsed">
+                        <!-- Ovládací lišta: vyhledávání a filtry městských částí -->
+                        <div class="candidates-controls">
+                            <div class="candidates-search-box">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="candidateSearchInput" placeholder="Hledat kandidáta, profesi nebo část města..." oninput="filterCandidates()" autocomplete="off">
+                                <button type="button" id="candidateSearchClear" class="search-clear-btn" onclick="clearCandidateSearch()" aria-label="Vymazat hledání" style="display:none;">✕</button>
+                            </div>
+                            <div class="candidates-filter-chips">
+                                <button type="button" class="filter-chip active" data-filter="all" onclick="setCandidateFilter('all')">Všichni (33)</button>
+                                <button type="button" class="filter-chip" data-filter="Kryblice" onclick="setCandidateFilter('Kryblice')">Kryblice</button>
+                                <button type="button" class="filter-chip" data-filter="Předměstí" onclick="setCandidateFilter('Předměstí')">Předměstí</button>
+                                <button type="button" class="filter-chip" data-filter="Poříčí" onclick="setCandidateFilter('Poříčí')">Poříčí</button>
+                                <button type="button" class="filter-chip" data-filter="Horní Staré Město" onclick="setCandidateFilter('Horní Staré Město')">Horní Staré Město</button>
+                                <button type="button" class="filter-chip" data-filter="Vnitřní Město" onclick="setCandidateFilter('Vnitřní Město')">Vnitřní Město</button>
+                                <button type="button" class="filter-chip" data-filter="ostatní" onclick="setCandidateFilter('ostatní')">Ostatní části</button>
+                            </div>
+                        </div>
+
+                        <!-- Počet nalezených záznamů -->
+                        <div class="candidates-meta-bar">
+                            <span id="candidatesCountInfo">Zobrazeno <strong>33</strong> kandidátů</span>
+                            <span class="candidates-sort-hint">Oficiální pořadí na hlasovacím lístku</span>
+                        </div>
+
+                        <!-- Tabulka kandidátů -->
+                        <div class="candidates-table-container">
+                            <table class="candidates-table" id="candidatesTable">
+                                <thead>
+                                    <tr>
+                                        <th class="col-num">#</th>
+                                        <th class="col-name">Jméno a příjmení</th>
+                                        <th class="col-age">Věk</th>
+                                        <th class="col-occ">Povolání</th>
+                                        <th class="col-loc">Část obce</th>
+                                        <th class="col-party">Příslušnost / Navržen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="candidate-row candidate-leader-row" data-num="1" data-name="mgr. bc. kateřina hurdálková" data-occ="osvč – majitelka čistírny" data-loc="vnitřní město" data-loc-group="Vnitřní Město">
+                                        <td class="col-num"><span class="num-badge">1</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Mgr. Bc. Kateřina Hurdálková</strong> <span class="leader-mini-badge">Lídr</span></div></td>
+                                        <td class="col-age">48</td>
+                                        <td class="col-occ">OSVČ – majitelka čistírny</td>
+                                        <td class="col-loc"><span class="loc-tag">Vnitřní Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-pro" title="PRO Právo Respekt Odbornost / navržen PRO Právo Respekt Odbornost">PRO</span></td>
+                                    </tr>
+                                    <tr class="candidate-row candidate-leader-row" data-num="2" data-name="soňa ondráčková" data-occ="sociální pracovnice" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">2</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Soňa Ondráčková</strong></div></td>
+                                        <td class="col-age">46</td>
+                                        <td class="col-occ">sociální pracovnice</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-spd" title="Svoboda a přímá demokracie (SPD) / navržen Svoboda a přímá demokracie (SPD)">SPD</span></td>
+                                    </tr>
+                                    <tr class="candidate-row candidate-leader-row" data-num="3" data-name="václav török" data-occ="ředitel chráněné dílny" data-loc="střední předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">3</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Václav Török</strong></div></td>
+                                        <td class="col-age">53</td>
+                                        <td class="col-occ">ředitel chráněné dílny</td>
+                                        <td class="col-loc"><span class="loc-tag">Střední Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-pro" title="PRO Právo Respekt Odbornost / navržen PRO Právo Respekt Odbornost">PRO</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="4" data-name="ing. jan kytýr" data-occ="osvč – programátor" data-loc="dolní předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">4</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Ing. Jan Kytýr</strong></div></td>
+                                        <td class="col-age">46</td>
+                                        <td class="col-occ">OSVČ – programátor</td>
+                                        <td class="col-loc"><span class="loc-tag">Dolní Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-svobodni" title="Svobodní / navržen Svobodní">Svobodní</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="5" data-name="ing. michal karlík" data-occ="projektant" data-loc="střední předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">5</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Ing. Michal Karlík</strong></div></td>
+                                        <td class="col-age">61</td>
+                                        <td class="col-occ">projektant</td>
+                                        <td class="col-loc"><span class="loc-tag">Střední Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-pro" title="PRO Právo Respekt Odbornost / navržen PRO Právo Respekt Odbornost">PRO</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="6" data-name="luďka tomešová" data-occ="osvč – majitelka lt tiskárna" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">6</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Luďka Tomešová</strong></div></td>
+                                        <td class="col-age">57</td>
+                                        <td class="col-occ">OSVČ – majitelka LT tiskárna</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="7" data-name="jiří handžák" data-occ="důchodce" data-loc="horní staré město" data-loc-group="Horní Staré Město">
+                                        <td class="col-num"><span class="num-badge">7</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jiří Handžák</strong></div></td>
+                                        <td class="col-age">72</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Horní Staré Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-spd" title="Svoboda a přímá demokracie (SPD) / navržen Svoboda a přímá demokracie (SPD)">SPD</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="8" data-name="zdeněk hromádka" data-occ="skladník" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">8</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Zdeněk Hromádka</strong></div></td>
+                                        <td class="col-age">50</td>
+                                        <td class="col-occ">skladník</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-spd" title="bez politické příslušnosti / navržen Svoboda a přímá demokracie (SPD)">SPD</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="9" data-name="jiří mikyska" data-occ="invalidní důchodce" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">9</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jiří Mikyska</strong></div></td>
+                                        <td class="col-age">52</td>
+                                        <td class="col-occ">invalidní důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-pro" title="PRO Právo Respekt Odbornost / navržen PRO Právo Respekt Odbornost">PRO</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="10" data-name="romana petirová" data-occ="administrativní pracovnice" data-loc="dolní předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">10</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Romana Petirová</strong></div></td>
+                                        <td class="col-age"><span class="text-muted" title="Bude upřesněno">–</span></td>
+                                        <td class="col-occ">administrativní pracovnice</td>
+                                        <td class="col-loc"><span class="loc-tag">Dolní Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="11" data-name="tomáš patzelt" data-occ="osvč – instalatér" data-loc="studenec" data-loc-group="ostatní">
+                                        <td class="col-num"><span class="num-badge">11</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Tomáš Patzelt</strong></div></td>
+                                        <td class="col-age">41</td>
+                                        <td class="col-occ">OSVČ – instalatér</td>
+                                        <td class="col-loc"><span class="loc-tag">Studenec</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="12" data-name="petr nymsa" data-occ="energetický expert, manažer" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">12</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Petr Nymsa</strong></div></td>
+                                        <td class="col-age">54</td>
+                                        <td class="col-occ">energetický expert, manažer</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="13" data-name="stanislava volfová" data-occ="referent kvality" data-loc="horní staré město" data-loc-group="Horní Staré Město">
+                                        <td class="col-num"><span class="num-badge">13</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Stanislava Volfová</strong></div></td>
+                                        <td class="col-age">59</td>
+                                        <td class="col-occ">referent kvality</td>
+                                        <td class="col-loc"><span class="loc-tag">Horní Staré Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="14" data-name="zografia drahuská" data-occ="pracovnice sociálních služeb" data-loc="horní staré město" data-loc-group="Horní Staré Město">
+                                        <td class="col-num"><span class="num-badge">14</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Zografia Drahuská</strong></div></td>
+                                        <td class="col-age">56</td>
+                                        <td class="col-occ">pracovnice sociálních služeb</td>
+                                        <td class="col-loc"><span class="loc-tag">Horní Staré Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-spd" title="Svoboda a přímá demokracie (SPD) / navržen Svoboda a přímá demokracie (SPD)">SPD</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="15" data-name="jakub ondráček" data-occ="kovoobráběč" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">15</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jakub Ondráček</strong></div></td>
+                                        <td class="col-age">24</td>
+                                        <td class="col-occ">kovoobráběč</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="16" data-name="ivan roštejnský" data-occ="důchodce" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">16</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Ivan Roštejnský</strong></div></td>
+                                        <td class="col-age">65</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="17" data-name="petr bouslavský" data-occ="důchodce" data-loc="střední předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">17</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Petr Bouslavský</strong></div></td>
+                                        <td class="col-age">73</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Střední Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-pro" title="PRO Právo Respekt Odbornost / navržen PRO Právo Respekt Odbornost">PRO</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="18" data-name="tomáš novák" data-occ="řidič mezinárodní dopravy" data-loc="poříčí" data-loc-group="Poříčí">
+                                        <td class="col-num"><span class="num-badge">18</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Tomáš Novák</strong></div></td>
+                                        <td class="col-age">52</td>
+                                        <td class="col-occ">řidič mezinárodní dopravy</td>
+                                        <td class="col-loc"><span class="loc-tag">Poříčí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="19" data-name="jan chmelař" data-occ="zaměstnanec bezpečnostní služby" data-loc="střední předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">19</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jan Chmelař</strong></div></td>
+                                        <td class="col-age">46</td>
+                                        <td class="col-occ">zaměstnanec bezpečnostní služby</td>
+                                        <td class="col-loc"><span class="loc-tag">Střední Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="20" data-name="michal šubrt" data-occ="strážník – ostraha" data-loc="horní předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">20</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Michal Šubrt</strong></div></td>
+                                        <td class="col-age">40</td>
+                                        <td class="col-occ">strážník – ostraha</td>
+                                        <td class="col-loc"><span class="loc-tag">Horní Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="21" data-name="vlastimil rozsypal" data-occ="it specialista" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">21</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Vlastimil Rozsypal</strong></div></td>
+                                        <td class="col-age">66</td>
+                                        <td class="col-occ">IT specialista</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="22" data-name="věra mlézivová" data-occ="osvč – pohřební služba aura" data-loc="bojiště" data-loc-group="ostatní">
+                                        <td class="col-num"><span class="num-badge">22</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Věra Mlézivová</strong></div></td>
+                                        <td class="col-age">66</td>
+                                        <td class="col-occ">OSVČ – pohřební služba Aura</td>
+                                        <td class="col-loc"><span class="loc-tag">Bojiště</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="23" data-name="šedík" data-occ="strojník" data-loc="babí" data-loc-group="ostatní">
+                                        <td class="col-num"><span class="num-badge">23</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Šedík</strong></div></td>
+                                        <td class="col-age">58</td>
+                                        <td class="col-occ">strojník</td>
+                                        <td class="col-loc"><span class="loc-tag">Babí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="24" data-name="vladimír nekrasov" data-occ="důchodce" data-loc="horní staré město" data-loc-group="Horní Staré Město">
+                                        <td class="col-num"><span class="num-badge">24</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Vladimír Nekrasov</strong></div></td>
+                                        <td class="col-age">73</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Horní Staré Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="25" data-name="libuše fišerová" data-occ="osvč – cestovní ruch" data-loc="bohuslavice" data-loc-group="ostatní">
+                                        <td class="col-num"><span class="num-badge">25</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Libuše Fišerová</strong></div></td>
+                                        <td class="col-age">61</td>
+                                        <td class="col-occ">OSVČ – cestovní ruch</td>
+                                        <td class="col-loc"><span class="loc-tag">Bohuslavice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="26" data-name="pavla oborníková" data-occ="důchodce" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">26</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Pavla Oborníková</strong></div></td>
+                                        <td class="col-age">76</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="27" data-name="jiří burdych" data-occ="kuchař" data-loc="poříčí" data-loc-group="Poříčí">
+                                        <td class="col-num"><span class="num-badge">27</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jiří Burdych</strong></div></td>
+                                        <td class="col-age">54</td>
+                                        <td class="col-occ">kuchař</td>
+                                        <td class="col-loc"><span class="loc-tag">Poříčí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="28" data-name="hana čudová" data-occ="zdravotní sestra" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">28</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Hana Čudová</strong></div></td>
+                                        <td class="col-age">47</td>
+                                        <td class="col-occ">zdravotní sestra</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-spd" title="Svoboda a přímá demokracie (SPD) / navržen Svoboda a přímá demokracie (SPD)">SPD</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="29" data-name="aleš kotek" data-occ="důchodce" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">29</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Aleš Kotek</strong></div></td>
+                                        <td class="col-age">82</td>
+                                        <td class="col-occ">důchodce</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="30" data-name="jiří ondráček" data-occ="kovoobráběč" data-loc="kryblice" data-loc-group="Kryblice">
+                                        <td class="col-num"><span class="num-badge">30</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Jiří Ondráček</strong></div></td>
+                                        <td class="col-age">21</td>
+                                        <td class="col-occ">kovoobráběč</td>
+                                        <td class="col-loc"><span class="loc-tag">Kryblice</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="31" data-name="tereza gergely" data-occ="student" data-loc="poříčí" data-loc-group="Poříčí">
+                                        <td class="col-num"><span class="num-badge">31</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Tereza Gergely</strong></div></td>
+                                        <td class="col-age">18</td>
+                                        <td class="col-occ">student</td>
+                                        <td class="col-loc"><span class="loc-tag">Poříčí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="32" data-name="adam hurdálek" data-occ="student" data-loc="vnitřní město" data-loc-group="Vnitřní Město">
+                                        <td class="col-num"><span class="num-badge">32</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Adam Hurdálek</strong></div></td>
+                                        <td class="col-age">18</td>
+                                        <td class="col-occ">student</td>
+                                        <td class="col-loc"><span class="loc-tag">Vnitřní Město</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                    <tr class="candidate-row" data-num="33" data-name="mgr. daniela kytýrová" data-occ="učitelka, speciální pedagog" data-loc="dolní předměstí" data-loc-group="Předměstí">
+                                        <td class="col-num"><span class="num-badge">33</span></td>
+                                        <td class="col-name"><div class="name-wrapper"><strong>Mgr. Daniela Kytýrová</strong></div></td>
+                                        <td class="col-age">49</td>
+                                        <td class="col-occ">učitelka, speciální pedagog</td>
+                                        <td class="col-loc"><span class="loc-tag">Dolní Předměstí</span></td>
+                                        <td class="col-party"><span class="badge-party badge-nezavisly" title="bez politické příslušnosti / nezávislý kandidát">Nezávislý</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div id="candidatesNoResults" class="candidates-no-results" style="display:none;">
+                            <div class="no-results-icon">🔍</div>
+                            <p>Žádný kandidát neodpovídá zadanému hledání nebo filtru.</p>
+                            <button type="button" class="btn-secondary btn-sm" onclick="clearCandidateSearch()">Zrušit filtr</button>
+                        </div>
+
+                        <!-- Zmocněnec volební strany -->
+                        <div class="candidates-legal-info">
+                            <div class="legal-item">
+                                <span class="legal-label">Zmocněnec volební strany:</span>
+                                <span class="legal-value">Ing. Jaromír Vlček (Kalná Voda)</span>
+                            </div>
+                            <div class="legal-item">
+                                <span class="legal-label">Náhradník zmocněnce:</span>
+                                <span class="legal-value">Ladislav Hurdálek (Trutnov-Studenec)</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

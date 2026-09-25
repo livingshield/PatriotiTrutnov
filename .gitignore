@@ -20,5 +20,6 @@ appsettings.Production.json
 qr_crop.png
 wwwroot/img/extracted/
 /*.pdf
+*.docx
 dayly_promts.json
 zadani1.txt
