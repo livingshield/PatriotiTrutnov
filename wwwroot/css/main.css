@@ -1151,6 +1151,36 @@ select option {
     flex-shrink: 0;
 }
 
+.header-yt-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(255, 0, 0, 0.12);
+    border: 1px solid rgba(255, 0, 0, 0.35);
+    border-radius: 6px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.header-yt-btn:hover {
+    background: #ff0000;
+    color: #ffffff;
+    border-color: #ff0000;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.35);
+}
+
+.header-yt-btn .yt-icon {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
 /* Theme Dropdown Select */
 .theme-dropdown {
     position: relative;
@@ -2163,6 +2193,17 @@ select option {
     color: #854d0e;
     border-color: rgba(202, 138, 4, 0.25);
 }
+.light-theme .header-yt-btn {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.25);
+    color: #dc2626;
+}
+.light-theme .header-yt-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+    border-color: #dc2626;
+}
+
 
 /* Patrioti Theme Overrides */
 .patrioti-theme .candidates-table-container {
@@ -2488,5 +2529,190 @@ select option {
         gap: 15px;
     }
 }
+
+/* ==========================================
+   Videos Section (YouTube Embeds)
+   ========================================== */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.video-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    transition: var(--transition);
+}
+
+.video-thumb-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    cursor: pointer;
+    overflow: hidden;
+    background: #000000;
+}
+
+.video-thumb-wrapper .video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+}
+
+.video-thumb-wrapper:hover .video-thumb {
+    transform: scale(1.04);
+}
+
+.video-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    transition: background 0.3s ease;
+}
+
+.video-thumb-wrapper:hover .video-play-overlay {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.play-button-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #ff0000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.play-button-circle svg {
+    margin-left: 3px;
+}
+
+.video-thumb-wrapper:hover .play-button-circle {
+    transform: scale(1.15);
+}
+
+.play-label {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.video-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    z-index: 2;
+}
+
+.video-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.video-title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.video-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.video-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.video-direct-link {
+    font-size: 0.88rem;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.video-direct-link:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.btn-yt-channel {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.btn-yt-channel .yt-icon {
+    width: 22px;
+    height: 22px;
+}
+
+@media (max-width: 850px) {
+    .videos-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .video-info {
+        padding: 20px;
+    }
+    .video-title {
+        font-size: 1.08rem;
+    }
+    .btn-yt-channel {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 
 
