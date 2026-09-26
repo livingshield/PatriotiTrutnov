@@ -11,20 +11,25 @@
     <link rel="canonical" href="https://www.patriotitrutnov.cz">
     <link rel="icon" type="image/png" href="img/PatriotiLogoBlack.png">
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Patrioti Trutnov">
+    <meta property="og:locale" content="cs_CZ">
     <meta property="og:url" content="https://www.patriotitrutnov.cz">
     <meta property="og:title" content="Patrioti Trutnov | Kandidátka č. 1 – Komunální volby Trutnov">
-    <meta property="og:description" content="Co z Trutnova máte Vy? Máme jasný plán pro čistou vodu, bezpečné ulice a ochranu podhůří.">
+    <meta property="og:description" content="Kandidátka č. 1 pro komunální volby v Trutnově (9.–10. 10. 2026). Máme 10 jasných priorit, akční plán pro prvních 100 dní a silný tým 33 patriotů pod vedením Kateřiny Hurdálkové.">
     <meta property="og:image" content="https://www.patriotitrutnov.cz/img/PatriotiBanner.png">
+    <meta property="og:image:secure_url" content="https://www.patriotitrutnov.cz/img/PatriotiBanner.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Patrioti Trutnov - Kandidátka č. 1">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.patriotitrutnov.cz">
     <meta property="twitter:title" content="Patrioti Trutnov | Kandidátka č. 1">
-    <meta property="twitter:description" content="Co z Trutnova máte Vy? Máme jasný plán pro čistou vodu, bezpečné ulice a ochranu podhůří.">
+    <meta property="twitter:description" content="Kandidátka č. 1 pro komunální volby v Trutnově (9.–10. 10. 2026). Máme 10 jasných priorit a tým 33 patriotů pro bezpečný a prosperující Trutnov.">
     <meta property="twitter:image" content="https://www.patriotitrutnov.cz/img/PatriotiBanner.png">
 
     <!-- Structured Data (JSON-LD) -->
@@ -56,7 +61,7 @@
     <link rel="stylesheet" href="css/main.css">
     <script>
         (function() {
-            const theme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'gold';
+            const theme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'patrioti';
             document.documentElement.classList.add(theme + '-theme');
         })();
     </script>
@@ -96,16 +101,16 @@
                     <!-- Rozbalovací výběr motivů (Theme Dropdown) -->
                     <div class="theme-dropdown" id="themeDropdown">
                         <button type="button" class="theme-dropdown-trigger" id="themeDropdownTrigger" aria-haspopup="true" aria-expanded="false" title="Změnit barevný motiv vzhledu">
-                            <span class="theme-current-icon" id="themeCurrentIcon">✨</span>
-                            <span class="theme-current-name" id="themeCurrentName">Zlatý</span>
+                            <span class="theme-current-icon" id="themeCurrentIcon">🛡️</span>
+                            <span class="theme-current-name" id="themeCurrentName">Patrioti</span>
                             <span class="theme-dropdown-arrow">▾</span>
                         </button>
                         <div class="theme-dropdown-menu" id="themeDropdownMenu" role="menu">
-                            <button type="button" class="theme-dropdown-item" data-theme="patrioti" role="menuitem">
+                            <button type="button" class="theme-dropdown-item active" data-theme="patrioti" role="menuitem">
                                 <span class="theme-icon">🛡️</span>
                                 <span class="theme-text">Patrioti</span>
                             </button>
-                            <button type="button" class="theme-dropdown-item active" data-theme="gold" role="menuitem">
+                            <button type="button" class="theme-dropdown-item" data-theme="gold" role="menuitem">
                                 <span class="theme-icon">✨</span>
                                 <span class="theme-text">Zlatý</span>
                             </button>
@@ -116,18 +121,6 @@
                             <button type="button" class="theme-dropdown-item" data-theme="light" role="menuitem">
                                 <span class="theme-icon">☀️</span>
                                 <span class="theme-text">Světlý</span>
-                            </button>
-                            <button type="button" class="theme-dropdown-item" data-theme="red" role="menuitem">
-                                <span class="theme-icon">🔥</span>
-                                <span class="theme-text">Plamen</span>
-                            </button>
-                            <button type="button" class="theme-dropdown-item" data-theme="green" role="menuitem">
-                                <span class="theme-icon">🌲</span>
-                                <span class="theme-text">Les</span>
-                            </button>
-                            <button type="button" class="theme-dropdown-item" data-theme="water" role="menuitem">
-                                <span class="theme-icon">💧</span>
-                                <span class="theme-text">Voda</span>
                             </button>
                         </div>
                     </div>
@@ -789,6 +782,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Sekce Sdílení programu -->
+                <div class="share-section reveal">
+                    <div class="share-box">
+                        <span class="share-badge">📢 POMOZTE NÁM ROZŠÍŘIT PROGRAM</span>
+                        <h3 class="share-title">Záleží vám na budoucnosti Trutnova?</h3>
+                        <p class="share-desc">Sdílejte náš program a vizi se svými sousedy, přáteli a rodinou. Změna k lepšímu v Trutnově začíná u každého z nás!</p>
+                        <div class="share-buttons">
+                            <a href="https://api.whatsapp.com/send?text=Ahoj%2C%20pod%C3%ADvej%20se%20na%20volebn%C3%AD%20program%20a%20kandid%C3%A1tku%20Patriot%C5%AF%20Trutnov%20(kandid%C3%A1tka%20%C4%8D.%201)%20pro%20komun%C3%A1ln%C3%AD%20volby%3A%20https%3A%2F%2Fwww.patriotitrutnov.cz" target="_blank" rel="noopener noreferrer" class="btn-share btn-share-wa">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 2C6.496 2 2 6.496 2 12.031c0 1.767.461 3.488 1.336 5.008L2 22l5.127-1.344A10.016 10.016 0 0 0 12.031 22C17.566 22 22 17.504 22 12.031 22 6.496 17.566 2 12.031 2zm0 18.25a8.212 8.212 0 0 1-4.195-1.148l-.301-.179-3.119.818.832-3.04-.196-.312A8.204 8.204 0 0 1 3.781 12.03c0-4.549 3.702-8.25 8.25-8.25 4.548 0 8.25 3.701 8.25 8.25 0 4.548-3.702 8.25-8.25 8.25zm4.52-6.17c-.248-.124-1.467-.724-1.695-.807-.228-.083-.394-.124-.56.124-.166.248-.642.807-.787.973-.145.166-.29.187-.538.062s-1.047-.386-1.995-1.232c-.738-.658-1.236-1.47-1.381-1.718-.145-.248-.016-.382.108-.506.112-.111.248-.29.373-.435.124-.145.166-.248.249-.415.083-.166.041-.311-.021-.435-.062-.124-.56-1.349-.767-1.848-.202-.486-.407-.42-.56-.428l-.477-.008c-.166 0-.435.062-.663.311-.228.248-.87 0.851-.87 2.075 0 1.224.891 2.407 1.015 2.573.124.166 1.753 2.678 4.248 3.755.594.256 1.058.409 1.42.524.597.19 1.14.163 1.569.099.479-.072 1.467-.6 1.674-1.18.207-.58.207-1.078.145-1.18-.062-.102-.228-.164-.476-.288z"/></svg>
+                                <span>Sdílet na WhatsAppu</span>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.patriotitrutnov.cz" target="_blank" rel="noopener noreferrer" class="btn-share btn-share-fb">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                                <span>Sdílet na Facebooku</span>
+                            </a>
+                            <button type="button" class="btn-share btn-share-copy" id="shareCopyBtn" onclick="copySiteLink(this)">
+                                🔗 <span>Zkopírovat odkaz</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -863,6 +878,22 @@
                                 <p class="voting-tip-text">
                                     Označte <strong>velkým křížkem celou volební stranu č. 1 – PATRIOTI TRUTNOV</strong> v záhlaví hlasovacího lístku. Tímto způsobem získá náš tým všech vašich 33 hlasů a zabráníte jejich roztříštění.
                                 </p>
+
+                                <div class="ballot-mockup">
+                                    <div class="ballot-header">
+                                        <div class="ballot-num">1.</div>
+                                        <div class="ballot-checkbox">✕</div>
+                                        <div class="ballot-name">
+                                            <strong>PATRIOTI TRUTNOV</strong>
+                                            <span>Koalice SPD, PRO a Svobodní</span>
+                                        </div>
+                                        <span class="ballot-badge">Doporučeno</span>
+                                    </div>
+                                    <div class="ballot-explanation">
+                                        <div class="ballot-step"><strong>1 velký křížek = 33 hlasů pro celou naši kandidátku.</strong></div>
+                                        <div class="ballot-step">Není třeba křížkovat jednotlivé kandidáty zvlášť, křížek v záhlaví automaticky podpoří celý náš tým.</div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Ohlédnutí za besedou 25. 9. -->
@@ -1326,6 +1357,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Plovoucí tlačítko Scroll to top -->
+    <button type="button" id="scrollTopBtn" class="scroll-top-btn" aria-label="Zpět nahoru" title="Zpět na začátek stránky">↑</button>
 
     <script src="js/animations.js"></script>
 </body>

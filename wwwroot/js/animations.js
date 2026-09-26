@@ -58,7 +58,7 @@ const THEME_META = {
 };
 
 const setAppTheme = (themeName) => {
-    if (!THEME_META[themeName]) themeName = 'gold';
+    if (!THEME_META[themeName]) themeName = 'patrioti';
 
     // Remove all theme classes
     THEME_CLASSES.forEach(cls => document.documentElement.classList.remove(cls));
@@ -119,8 +119,8 @@ if (themeDropdownTrigger && themeDropdown) {
     });
 }
 
-// Initialize Theme on load - Gold is default
-const savedTheme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'gold';
+// Initialize Theme on load - Patrioti is default
+const savedTheme = localStorage.getItem('patrioti_theme') || localStorage.getItem('theme') || 'patrioti';
 setAppTheme(savedTheme);
 
 // ==========================================
@@ -504,5 +504,46 @@ function playEmbeddedVideo(wrapper) {
     wrapper.classList.add('playing');
 }
 
+// ==========================================
+// 11. Scroll to Top Button
+// ==========================================
+const scrollTopBtn = document.getElementById('scrollTopBtn');
+if (scrollTopBtn) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+    }, { passive: true });
 
+    scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
 
+// ==========================================
+// 12. Copy Site Link helper
+// ==========================================
+function copySiteLink(buttonEl) {
+    const url = 'https://www.patriotitrutnov.cz';
+    const textSpan = buttonEl.querySelector('span');
+    const originalText = textSpan ? textSpan.textContent : buttonEl.textContent;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+            if (textSpan) textSpan.textContent = 'Zkopírováno! ✓';
+            buttonEl.style.borderColor = '#22c55e';
+            buttonEl.style.color = '#22c55e';
+            setTimeout(() => {
+                if (textSpan) textSpan.textContent = originalText;
+                buttonEl.style.borderColor = '';
+                buttonEl.style.color = '';
+            }, 3000);
+        }).catch(() => {
+            prompt('Zkopírujte si odkaz na web:', url);
+        });
+    } else {
+        prompt('Zkopírujte si odkaz na web:', url);
+    }
+}

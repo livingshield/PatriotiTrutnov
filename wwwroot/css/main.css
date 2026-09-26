@@ -2493,6 +2493,10 @@ select option {
         grid-template-columns: 1fr;
     }
 
+    .candidate-card.candidate-leader {
+        order: -1;
+    }
+
     .candidates-full-wrapper {
         padding: 22px 16px;
     }
@@ -2976,6 +2980,240 @@ select option {
     .footer-bottom-corner {
         justify-content: center;
         margin-top: 16px;
+    }
+}
+
+/* ==========================================
+   Ballot Mockup (Voting Guide)
+   ========================================== */
+.ballot-mockup {
+    background: rgba(0, 0, 0, 0.35);
+    border: 2px dashed rgba(234, 179, 8, 0.45);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-top: 16px;
+}
+
+.ballot-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(234, 179, 8, 0.12);
+    border: 1px solid rgba(234, 179, 8, 0.35);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+}
+
+.ballot-num {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.ballot-checkbox {
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.15);
+    border: 2px solid #22c55e;
+    border-radius: 6px;
+    padding: 2px 8px;
+    line-height: 1.1;
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.5);
+}
+
+.ballot-name {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ballot-name strong {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    letter-spacing: 0.5px;
+}
+
+.ballot-name span {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+.ballot-badge {
+    background: #22c55e;
+    color: #000000;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ballot-explanation {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+.ballot-step strong {
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   Share Box (WhatsApp, Facebook, Copy link)
+   ========================================== */
+.share-section {
+    margin: 40px auto 0 auto;
+    max-width: 900px;
+}
+
+.share-box {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.share-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.share-title {
+    font-size: 1.6rem;
+    margin: 0 0 10px 0;
+    color: var(--text-primary);
+}
+
+.share-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 0 auto 22px auto;
+    line-height: 1.5;
+}
+
+.share-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.btn-share {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-share:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-share-wa {
+    background: #25d366;
+    color: #ffffff;
+}
+
+.btn-share-wa:hover {
+    background: #20ba5a;
+    box-shadow: 0 8px 22px rgba(37, 211, 102, 0.4);
+}
+
+.btn-share-fb {
+    background: #1877f2;
+    color: #ffffff;
+}
+
+.btn-share-fb:hover {
+    background: #0d65d9;
+    box-shadow: 0 8px 22px rgba(24, 119, 242, 0.4);
+}
+
+.btn-share-copy {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+.btn-share-copy:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: var(--accent);
+}
+
+/* ==========================================
+   Scroll-to-Top Button
+   ========================================== */
+.scroll-top-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-surface, #1e293b);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px);
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease, background 0.2s ease, color 0.2s ease;
+    z-index: 998;
+}
+
+.scroll-top-btn.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(234, 179, 8, 0.45);
+}
+
+@media (max-width: 600px) {
+    .ballot-header {
+        flex-wrap: wrap;
+    }
+    .share-buttons {
+        flex-direction: column;
+    }
+    .btn-share {
+        width: 100%;
+        justify-content: center;
     }
 }
 
