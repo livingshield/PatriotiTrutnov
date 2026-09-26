@@ -57,6 +57,7 @@ function Upload-Folder($localPath, $remotePath) {
     $items = Get-ChildItem $localPath
     foreach ($item in $items) {
         if ($item.Name -eq "app_offline.htm" -or $item.Name -eq "app_offline_temp.htm") { continue }
+        if ($item.Extension -eq ".exe" -or $item.Name -like "*.exe*") { continue }
         $target = $remotePath + $item.Name
         if ($item.PSIsContainer) {
             Ensure-RemoteDir ($target + "/")
@@ -77,6 +78,8 @@ Copy-Item "$PSScriptRoot\.env.test" "$PSScriptRoot\.env" -Force
 Write-Host "Step 1: Publishing project..."
 dotnet publish -c Release -o publish
 Copy-Item "$PSScriptRoot\.env.test" "$localPath\.env" -Force
+# Strip all .exe files as required by ASPONE hosting policy
+Get-ChildItem -Path $localPath -Filter "*.exe" -Recurse | Remove-Item -Force
 
 Write-Host "Step 2: Uploading to FTP..."
 # Create temporary app_offline.htm locally
