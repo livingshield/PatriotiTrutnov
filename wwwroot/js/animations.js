@@ -124,83 +124,92 @@ const savedTheme = localStorage.getItem('patrioti_theme') || localStorage.getIte
 setAppTheme(savedTheme);
 
 // ==========================================
-// 4. Live Countdown to Event (25. 9. 2026 15:00)
+// 4. Live Countdown to Election Day (9. 10. 2026 14:00)
 // ==========================================
-const eventDate = new Date('2026-09-25T15:00:00+02:00').getTime();
+const electionStartDate = new Date('2026-10-09T14:00:00+02:00').getTime();
+const electionEndDate = new Date('2026-10-10T14:00:00+02:00').getTime();
 const cdDays = document.getElementById('cdDays');
 const cdHours = document.getElementById('cdHours');
 const cdMinutes = document.getElementById('cdMinutes');
 const cdSeconds = document.getElementById('cdSeconds');
+const countdownHeaderTitle = document.querySelector('.countdown-title');
 
 const updateCountdown = () => {
     if (!cdDays || !cdHours || !cdMinutes || !cdSeconds) return;
 
     const now = new Date().getTime();
-    const distance = eventDate - now;
 
-    if (distance <= 0) {
+    if (now < electionStartDate) {
+        // Countdown to voting room opening
+        const distance = electionStartDate - now;
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        cdDays.textContent = String(days).padStart(2, '0');
+        cdHours.textContent = String(hours).padStart(2, '0');
+        cdMinutes.textContent = String(minutes).padStart(2, '0');
+        cdSeconds.textContent = String(seconds).padStart(2, '0');
+        if (countdownHeaderTitle) countdownHeaderTitle.textContent = 'Volební místnosti v Trutnově se otevírají za:';
+    } else if (now >= electionStartDate && now <= electionEndDate) {
+        // Voting in progress
         cdDays.textContent = '00';
         cdHours.textContent = '00';
         cdMinutes.textContent = '00';
         cdSeconds.textContent = '00';
-        const headerTitle = document.querySelector('.countdown-title');
-        if (headerTitle) headerTitle.textContent = 'Setkání právě probíhá nebo skončilo!';
-        return;
+        if (countdownHeaderTitle) countdownHeaderTitle.textContent = '🗳️ Volby právě probíhají! Přijďte volit kandidátku č. 1 – PATRIOTI TRUTNOV';
+    } else {
+        // Voting finished
+        cdDays.textContent = '00';
+        cdHours.textContent = '00';
+        cdMinutes.textContent = '00';
+        cdSeconds.textContent = '00';
+        if (countdownHeaderTitle) countdownHeaderTitle.textContent = 'Volební místnosti jsou uzavřeny. Děkujeme za každý hlas pro Patrioty Trutnov!';
     }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    cdDays.textContent = String(days).padStart(2, '0');
-    cdHours.textContent = String(hours).padStart(2, '0');
-    cdMinutes.textContent = String(minutes).padStart(2, '0');
-    cdSeconds.textContent = String(seconds).padStart(2, '0');
 };
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
 // ==========================================
-// 5. iCal (.ics) Download for Event
+// 5. GDPR Modal Logic
 // ==========================================
-const downloadIcsBtn = document.getElementById('downloadIcsBtn');
+const gdprModal = document.getElementById('gdprModal');
+const gdprModalOpen = document.getElementById('gdprModalOpen');
+const gdprFooterLink = document.getElementById('gdprFooterLink');
+const gdprModalClose = document.getElementById('gdprModalClose');
+const gdprModalBackdrop = document.getElementById('gdprModalBackdrop');
+const gdprModalConfirm = document.getElementById('gdprModalConfirm');
 
-if (downloadIcsBtn) {
-    downloadIcsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
+const openGdprModal = (e) => {
+    if (e) e.preventDefault();
+    if (gdprModal) {
+        gdprModal.classList.add('active');
+        gdprModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+};
 
-        const icsContent = [
-            'BEGIN:VCALENDAR',
-            'VERSION:2.0',
-            'PRODID:-//Patrioti Trutnov//Beseda 2026//CS',
-            'CALSCALE:GREGORIAN',
-            'METHOD:PUBLISH',
-            'BEGIN:VEVENT',
-            'UID:beseda-20260925-patrioti-trutnov@patriotitrutnov.cz',
-            'DTSTAMP:20260917T180000Z',
-            'DTSTART:20260925T130000Z',
-            'DTEND:20260925T150000Z',
-            'SUMMARY:Beseda s ob\u010dany - Patrioti Trutnov',
-            'DESCRIPTION:Setk\u00e1n\u00ed s kandid\u00e1tem na sen\u00e1tora a p\u0159edstaven\u00ed volebn\u00edho programu Patrioti Trutnov (Kandid\u00e1tka \u010d. 1). Host\u00e9: Mgr. Bc. Kate\u0159ina Hurd\u00e1lkov\u00e1, DiS., JUDr. Jind\u0159ich Rajchl, Ing. Hynek Beran.',
-            'LOCATION:Krakono\u0161ovo n\u00e1m\u011bst\u00ed, Trutnov',
-            'STATUS:CONFIRMED',
-            'END:VEVENT',
-            'END:VCALENDAR'
-        ].join('\r\n');
+const closeGdprModal = () => {
+    if (gdprModal) {
+        gdprModal.classList.remove('active');
+        gdprModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+};
 
-        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'patrioti-trutnov-beseda-25-9-2026.ics';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    });
-}
+if (gdprModalOpen) gdprModalOpen.addEventListener('click', openGdprModal);
+if (gdprFooterLink) gdprFooterLink.addEventListener('click', openGdprModal);
+if (gdprModalClose) gdprModalClose.addEventListener('click', closeGdprModal);
+if (gdprModalBackdrop) gdprModalBackdrop.addEventListener('click', closeGdprModal);
+if (gdprModalConfirm) gdprModalConfirm.addEventListener('click', closeGdprModal);
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && gdprModal && gdprModal.classList.contains('active')) {
+        closeGdprModal();
+    }
+});
 
 // ==========================================
 // 6. FAQ Accordion Logic
@@ -249,6 +258,14 @@ if (leadForm) {
 
         const formData = new FormData(leadForm);
         const data = Object.fromEntries(formData.entries());
+
+        if (!formData.get('gdpr_consent')) {
+            formStatus.innerText = 'Pro odeslání zprávy je nutné potvrdit souhlas se zpracováním osobních údajů.';
+            formStatus.className = 'status-message error';
+            btn.innerText = originalText;
+            btn.disabled = false;
+            return;
+        }
 
         // Collect volunteer checkboxes
         const selectedVolunteers = [];
