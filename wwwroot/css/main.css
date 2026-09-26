@@ -173,7 +173,7 @@ h1, h2, h3 {
     top: 0;
     width: 100%;
     z-index: 1000;
-    padding: 12px 0;
+    padding: 8px 0;
     background: var(--header-bg);
     backdrop-filter: blur(12px);
     transition: padding 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), background 0.3s ease, box-shadow 0.3s ease;
@@ -181,7 +181,7 @@ h1, h2, h3 {
 
 /* Shrinking header on scroll */
 .header.scrolled {
-    padding: 6px 0;
+    padding: 5px 0;
     background: var(--header-bg);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
     border-bottom: 1px solid var(--border);
@@ -199,7 +199,7 @@ h1, h2, h3 {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 800;
     letter-spacing: -1px;
     text-decoration: none;
@@ -211,19 +211,19 @@ h1, h2, h3 {
 }
 
 .header.scrolled .logo {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     gap: 10px;
 }
 
 .header-logo-img {
-    height: 116px;
+    height: 75px;
     width: auto;
     object-fit: contain;
     transition: height 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.3s ease;
 }
 
 .header.scrolled .header-logo-img {
-    height: 52px;
+    height: 48px;
 }
 
 /* Dignified logo hover (no wild rotating or tilting) */
@@ -243,21 +243,21 @@ h1, h2, h3 {
     flex-shrink: 0;
     text-decoration: none;
     line-height: 0;
-    margin-left: 16px;
+    margin-left: 14px;
     transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .header-volte-badge img {
-    height: 84px;
-    width: 84px;
+    height: 56px;
+    width: 56px;
     object-fit: contain;
     filter: drop-shadow(0 4px 14px rgba(234, 179, 8, 0.4));
     transition: height 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), transform 0.3s ease, filter 0.3s ease;
 }
 
 .header.scrolled .header-volte-badge img {
-    height: 48px;
-    width: 48px;
+    height: 40px;
+    width: 40px;
 }
 
 .header-volte-badge:hover img {
@@ -439,7 +439,20 @@ h1, h2, h3 {
 .hero-actions {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.hero-actions .btn-secondary {
+    margin-left: 0;
+}
+
+.hero-actions .btn-primary,
+.hero-actions .btn-secondary {
+    padding: 13px 30px;
+    font-size: 0.9rem;
+    font-weight: 700;
 }
 
 .badge {
@@ -913,7 +926,7 @@ select option {
 
 @media (max-width: 992px) {
     .header-logo-img {
-        height: 65px;
+        height: 56px;
     }
 
     .header-volte-badge {
@@ -923,17 +936,17 @@ select option {
     }
 
     .header-volte-badge img {
-        height: 48px;
-        width: 48px;
+        height: 44px;
+        width: 44px;
     }
 
     .header.scrolled .header-volte-badge img {
-        height: 40px;
-        width: 40px;
+        height: 36px;
+        width: 36px;
     }
 
     .header {
-        padding: 8px 0;
+        padding: 6px 0;
     }
 
     /* Mobile Navigation Dropdown */
