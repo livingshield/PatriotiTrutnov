@@ -2941,5 +2941,43 @@ select option {
     opacity: 0.35;
 }
 
+/* Footer Discreet Lock Button (Login) */
+.footer-bottom-corner {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+
+.footer-lock-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    opacity: 0.35;
+    padding: 6px;
+    border-radius: 6px;
+    transition: opacity 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    text-decoration: none;
+    line-height: 0;
+}
+
+.footer-lock-btn:hover {
+    opacity: 0.95;
+    color: var(--accent);
+    transform: scale(1.15);
+}
+
+.footer-lock-btn svg {
+    display: block;
+    stroke: currentColor;
+}
+
+@media (max-width: 992px) {
+    .footer-bottom-corner {
+        justify-content: center;
+        margin-top: 16px;
+    }
+}
+
 
 
