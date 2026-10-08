@@ -2660,6 +2660,27 @@ select option {
     z-index: 2;
 }
 
+.video-duration {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    font-family: monospace, sans-serif;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
 .video-iframe {
     position: absolute;
     top: 0;
@@ -2695,10 +2716,20 @@ select option {
 .video-footer {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-top: auto;
     padding-top: 14px;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
+    gap: 10px;
+}
+
+.video-duration-meta {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .video-direct-link {
